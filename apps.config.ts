@@ -32,7 +32,7 @@ const apps = {
       accent: "#eff6ff",
     },
     subjects: [{ key: "math" }, { key: "hist" }, { key: "lang" }],
-    botUsername: "REPLACE_ME_bot",
+    botUsername: "ottizball_bot",
     examDate: "2027-08-01",
   },
 } satisfies Record<AppKey, AppConfig>;
