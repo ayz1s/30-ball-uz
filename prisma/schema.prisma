@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  appKey       String
+  telegramId   BigInt
+  firstName    String?
+  languageCode String   @default("uz")
+  createdAt    DateTime @default(now())
+  lastSeenAt   DateTime @default(now())
+
+  progress Progress[]
+  attempts Attempt[]
+  errors   ErrorItem[]
+
+  @@unique([appKey, telegramId])
+}
+
+model Subject {
+  id     String @id @default(cuid())
+  appKey String
+  key    String // math | hist | lang
+  title  String
+  titleUz String
+  order  Int
+
+  classes Class[]
+
+  @@unique([appKey, key])
+}
+
+model Class {
+  id        String @id @default(cuid())
+  subjectId String
+  title     String
+  order     Int
+
+  subject  Subject   @relation(fields: [subjectId], references: [id])
+  chapters Chapter[]
+
+  @@index([subjectId, order])
+}
+
+model Chapter {
+  id      String @id @default(cuid())
+  classId String
+  title   String
+  order   Int
+
+  class  Class   @relation(fields: [classId], references: [id])
+  topics Topic[]
+
+  @@index([classId, order])
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  chapterId String
+  // Денормализовано из Subject.appKey — нужно для быстрой фильтрации тем
+  // текущего приложения без цепочки join'ов Chapter -> Class -> Subject
+  // на каждый список тем (раздел 2 ТЗ требует appKey на таблицах контента).
+  appKey    String
+  slug      String   @unique
+  title     String
+  order     Int
+  blocks    Json // массив учебных блоков, см. раздел 6 ТЗ
+  published Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  chapter   Chapter    @relation(fields: [chapterId], references: [id])
+  questions Question[]
+
+  @@index([chapterId, order])
+  @@index([appKey, published])
+}
+
+model Question {
+  id          String @id @default(cuid())
+  topicId     String
+  text        String
+  options     Json // массив строк
+  correctIdx  Int
+  explanation String
+  order       Int
+
+  topic    Topic       @relation(fields: [topicId], references: [id])
+  attempts Attempt[]
+  errors   ErrorItem[]
+
+  @@index([topicId, order])
+}
+
+model Progress {
+  id      String    @id @default(cuid())
+  userId  String
+  topicId String
+  status  String // opened | done | known
+  seenAt  DateTime  @default(now())
+  doneAt  DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, topicId])
+  @@index([userId, status])
+}
+
+model Attempt {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  chosenIdx  Int
+  correct    Boolean
+  ms         Int
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@index([userId, createdAt])
+}
+
+model ErrorItem {
+  id         String    @id @default(cuid())
+  userId     String
+  questionId String
+  status     String // open | fixed
+  wrongCount Int       @default(1)
+  createdAt  DateTime  @default(now())
+  fixedAt    DateTime?
+
+  user     User     @relation(fields: [userId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@unique([userId, questionId])
+  @@index([userId, status])
+}
