@@ -1,0 +1,105 @@
+{
+  "appKey": "ball30uz",
+  "subject": { "key": "math", "title": "Математика", "titleUz": "Matematika", "order": 1 },
+  "class": { "title": "Тестовый класс", "order": 0 },
+  "chapter": { "title": "Тестовая глава — заглушка", "order": 0 },
+  "topic": {
+    "slug": "test-math-topic",
+    "title": "Тестовая тема — заглушка (математика)",
+    "order": 0,
+    "published": true,
+    "blocks": [
+      {
+        "type": "text",
+        "paragraphs": [
+          [{ "text": "ЗАГЛУШКА: это тестовый текст для проверки блока text, не настоящий учебный материал." }],
+          [
+            { "text": "Второй абзац с " },
+            { "text": "подсвеченным фрагментом", "highlight": true },
+            { "text": " для проверки подсветки." }
+          ]
+        ]
+      },
+      {
+        "type": "rule",
+        "rule": "ЗАГЛУШКА правила: если A, то B.",
+        "examples": ["Пример 1 — заглушка", "Пример 2 — заглушка"]
+      },
+      {
+        "type": "image",
+        "url": "/test-placeholder.svg",
+        "caption": "Заглушка изображения для проверки блока image"
+      },
+      {
+        "type": "linkedFormula",
+        "problem": "ЗАГЛУШКА условия: стороны прямоугольника X и Y.",
+        "formula": "S = a × b",
+        "links": [
+          { "id": "a", "problemLabel": "X", "formulaLabel": "a" },
+          { "id": "b", "problemLabel": "Y", "formulaLabel": "b" }
+        ]
+      },
+      {
+        "type": "steps",
+        "steps": [
+          { "text": "Шаг 1 — заглушка", "explanation": "Почему так: тестовое объяснение шага 1" },
+          { "text": "Шаг 2 — заглушка", "explanation": "Почему так: тестовое объяснение шага 2" }
+        ]
+      },
+      {
+        "type": "decisionTree",
+        "root": {
+          "question": "Какой способ выбрать? (заглушка)",
+          "options": [
+            { "label": "Вариант А", "next": { "method": "Метод А — заглушка", "example": "Пример А" } },
+            {
+              "label": "Вариант Б",
+              "next": {
+                "question": "Уточняющий вопрос — заглушка",
+                "options": [
+                  { "label": "Б1", "next": { "method": "Метод Б1 — заглушка", "example": "Пример Б1" } },
+                  { "label": "Б2", "next": { "method": "Метод Б2 — заглушка", "example": "Пример Б2" } }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "firstStep",
+        "problem": "ЗАГЛУШКА задачи: выбери первое действие.",
+        "firstChoices": [
+          { "label": "Действие 1", "correct": true, "feedback": "Верно — заглушка объяснения" },
+          { "label": "Действие 2", "correct": false, "feedback": "Неверно — заглушка объяснения" }
+        ],
+        "secondChoices": [
+          { "label": "Действие А", "correct": false, "feedback": "Неверно — заглушка объяснения" },
+          { "label": "Действие Б", "correct": true, "feedback": "Верно — заглушка объяснения" }
+        ]
+      },
+      {
+        "type": "flashcards",
+        "cards": [
+          { "question": "Вопрос-заглушка 1", "answer": "Ответ-заглушка 1" },
+          { "question": "Вопрос-заглушка 2", "answer": "Ответ-заглушка 2" }
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "text": "Тестовый вопрос 1 (заглушка)",
+        "options": ["Вариант 1", "Вариант 2", "Вариант 3"],
+        "correctIdx": 1,
+        "explanation": "Пояснение-заглушка к вопросу 1",
+        "order": 0
+      },
+      {
+        "text": "Тестовый вопрос 2 (заглушка)",
+        "options": ["Да", "Нет"],
+        "correctIdx": 0,
+        "explanation": "Пояснение-заглушка к вопросу 2",
+        "order": 1
+      }
+    ]
+  }
+}

@@ -8,6 +8,13 @@ const dictionaries = {
     authError: "Не удалось войти. Проверьте связь и откройте приложение заново.",
     openInTelegramTitle: "Откройте в Telegram",
     openInTelegramBody: "Это приложение работает только внутри Telegram — откройте его через бота.",
+    tabTheory: "Теория",
+    tabScheme: "Схема",
+    tabCards: "Карточки",
+    tabQuestions: "Вопросы",
+    tabEmpty: "В этой теме пока нет материала для этой вкладки.",
+    questionExplanation: "Пояснение",
+    topicNotFound: "Тема не найдена или ещё не опубликована.",
   },
   uz: {
     loading: "Yuklanmoqda…",
@@ -16,6 +23,13 @@ const dictionaries = {
     authError: "Kirib bo‘lmadi. Aloqani tekshirib, ilovani qayta oching.",
     openInTelegramTitle: "Telegram orqali oching",
     openInTelegramBody: "Bu ilova faqat Telegram ichida ishlaydi — uni bot orqali oching.",
+    tabTheory: "Nazariya",
+    tabScheme: "Sxema",
+    tabCards: "Kartochkalar",
+    tabQuestions: "Savollar",
+    tabEmpty: "Bu mavzuda hozircha bu bo‘lim uchun material yo‘q.",
+    questionExplanation: "Izoh",
+    topicNotFound: "Mavzu topilmadi yoki hali e’lon qilinmagan.",
   },
 } satisfies Record<Locale, Record<string, string>>;
 

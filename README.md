@@ -47,4 +47,16 @@ npm test
 
 ## Как залить контент
 
-Появится на этапе 2 (`content/seed/` + `scripts/import-content.ts`).
+Темы описываются JSON-файлами в `content/seed/` (схема — в `content/schema/`).
+Один файл = один предмет/класс/глава/тема целиком, со всеми блоками и вопросами.
+
+```
+npm run content:validate   # проверяет JSON-файлы без обращения к базе
+npm run content:import     # заливает валидные файлы в базу (Subject → Class → Chapter → Topic → Question)
+```
+
+Файлы в репозитории сейчас (`test-math-topic.json`, `test-hist-topic.json`, `test-lang-topic.json`) —
+заглушки для проверки движка блоков, не настоящий учебный материал.
+
+Открыть тему можно по адресу `/topic/<slug>`, например `/topic/test-math-topic` —
+там вкладки Теория / Схема / Карточки / Вопросы.

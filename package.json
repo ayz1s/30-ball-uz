@@ -11,7 +11,9 @@
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "bot:set-webhook": "tsx scripts/set-webhook.ts"
+    "bot:set-webhook": "tsx scripts/set-webhook.ts",
+    "content:validate": "tsx scripts/validate-content.ts",
+    "content:import": "tsx scripts/import-content.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
