@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { getAppConfig } from "@/lib/config";
 import { getCurrentUser } from "@/lib/auth";
+import { getNextTopicSlug } from "@/lib/curriculum";
+import { recordTopicOpened } from "@/lib/progress";
 import { TopicScreen } from "@/components/topic-screen";
 import type { RawBlock } from "@/components/blocks/registry";
 import type { TopicQuestionData } from "@/components/topic-question";
@@ -28,6 +30,21 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     );
   }
 
+  let initialDone = false;
+  if (user) {
+    await recordTopicOpened(user.id, topic.id);
+    const progress = await db.progress.findUnique({
+      where: { userId_topicId: { userId: user.id, topicId: topic.id } },
+      select: { status: true },
+    });
+    initialDone = progress?.status === "done" || progress?.status === "known";
+  }
+
+  const nextSlug = await getNextTopicSlug(appKey, topic.id);
+  const nextTopic = nextSlug
+    ? await db.topic.findUnique({ where: { slug: nextSlug }, select: { slug: true, title: true } })
+    : null;
+
   const questions: TopicQuestionData[] = topic.questions.map((question) => ({
     id: question.id,
     text: question.text,
@@ -37,6 +54,14 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   }));
 
   return (
-    <TopicScreen title={topic.title} blocks={topic.blocks as RawBlock[]} questions={questions} locale={locale} />
+    <TopicScreen
+      topicId={topic.id}
+      title={topic.title}
+      blocks={topic.blocks as RawBlock[]}
+      questions={questions}
+      locale={locale}
+      initialDone={initialDone}
+      nextTopic={nextTopic}
+    />
   );
 }

@@ -3,6 +3,8 @@ import { z } from "zod";
 import { validateTelegramInitData } from "@/lib/telegram";
 import { createSessionForTelegramUser } from "@/lib/auth";
 import { isRateLimited } from "@/lib/rate-limit";
+import { getAppConfig } from "@/lib/config";
+import { getHomeSummary } from "@/lib/curriculum";
 
 export const runtime = "nodejs";
 
@@ -35,9 +37,12 @@ export async function POST(req: NextRequest) {
   }
 
   const user = await createSessionForTelegramUser(result.user);
+  const { key: appKey } = getAppConfig();
+  const home = await getHomeSummary(appKey, user.id);
 
   return NextResponse.json({
     firstName: user.firstName,
     languageCode: user.languageCode,
+    home,
   });
 }
