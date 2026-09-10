@@ -38,8 +38,8 @@ export function TopicQuestion({
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 p-4">
-      <p className="font-medium text-neutral-900">{question.text}</p>
+    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+      <p className="font-medium text-neutral-900 dark:text-neutral-100">{question.text}</p>
       <div className="grid gap-2">
         {question.options.map((option, i) => (
           <button
@@ -50,11 +50,11 @@ export function TopicQuestion({
             className={`min-h-12 rounded-lg px-4 py-3 text-left text-sm font-medium ${
               pickedIdx === i
                 ? i === question.correctIdx
-                  ? "bg-green-100 text-green-900"
-                  : "bg-red-100 text-red-900"
+                  ? "bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-200"
+                  : "bg-red-100 dark:bg-red-900 text-red-900 dark:text-red-200"
                 : pickedIdx !== null && i === question.correctIdx
-                  ? "bg-green-100 text-green-900"
-                  : "bg-neutral-100 text-neutral-800 disabled:opacity-60"
+                  ? "bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-200"
+                  : "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 disabled:opacity-60"
             }`}
           >
             {option}
@@ -62,7 +62,7 @@ export function TopicQuestion({
         ))}
       </div>
       {pickedIdx !== null && (
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-neutral-600 dark:text-neutral-300">
           <span className="font-medium">{t(locale, "questionExplanation")}:</span> {question.explanation}
         </p>
       )}

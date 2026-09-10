@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { cached } from "@/lib/cache";
+
+const CONTENT_TTL_MS = 60_000;
 
 export interface QuizQuestion {
   id: string;
@@ -26,77 +29,88 @@ function toQuizQuestions(rows: QuestionRow[]): QuizQuestion[] {
   }));
 }
 
+// Контент вопросов одинаков для всех пользователей и меняется только через
+// content:import — недолгий кэш убирает повторные тяжёлые join'ы на каждый
+// заход в тест (раздел 9 ТЗ: "списки тем кэшируются и отдаются быстро").
 export async function getClassQuestions(classId: string) {
-  const klass = await db.class.findUnique({
-    where: { id: classId },
-    include: {
-      subject: true,
-      chapters: { include: { topics: { where: { published: true }, include: { questions: true } } } },
-    },
-  });
-  if (!klass) return null;
+  return cached(`class-questions:${classId}`, CONTENT_TTL_MS, async () => {
+    const klass = await db.class.findUnique({
+      where: { id: classId },
+      include: {
+        subject: true,
+        chapters: { include: { topics: { where: { published: true }, include: { questions: true } } } },
+      },
+    });
+    if (!klass) return null;
 
-  const questions = klass.chapters.flatMap((chapter) => chapter.topics.flatMap((topic) => topic.questions));
-  return { title: klass.title, questions: toQuizQuestions(questions) };
+    const questions = klass.chapters.flatMap((chapter) => chapter.topics.flatMap((topic) => topic.questions));
+    return { title: klass.title, questions: toQuizQuestions(questions) };
+  });
 }
 
 export async function getSubjectQuestions(appKey: string, subjectKey: string) {
-  const subject = await db.subject.findUnique({
-    where: { appKey_key: { appKey, key: subjectKey } },
-    include: {
-      classes: {
-        include: { chapters: { include: { topics: { where: { published: true }, include: { questions: true } } } } },
+  return cached(`subject-questions:${appKey}:${subjectKey}`, CONTENT_TTL_MS, async () => {
+    const subject = await db.subject.findUnique({
+      where: { appKey_key: { appKey, key: subjectKey } },
+      include: {
+        classes: {
+          include: { chapters: { include: { topics: { where: { published: true }, include: { questions: true } } } } },
+        },
       },
-    },
-  });
-  if (!subject) return null;
+    });
+    if (!subject) return null;
 
-  const questions = subject.classes.flatMap((klass) =>
-    klass.chapters.flatMap((chapter) => chapter.topics.flatMap((topic) => topic.questions)),
-  );
-  return { title: subject.title, questions: toQuizQuestions(questions) };
+    const questions = subject.classes.flatMap((klass) =>
+      klass.chapters.flatMap((chapter) => chapter.topics.flatMap((topic) => topic.questions)),
+    );
+    return { title: subject.title, questions: toQuizQuestions(questions) };
+  });
 }
 
 export async function getAllQuestions(appKey: string) {
-  const topics = await db.topic.findMany({
-    where: { appKey, published: true },
-    include: { questions: true },
+  return cached(`all-questions:${appKey}`, CONTENT_TTL_MS, async () => {
+    const topics = await db.topic.findMany({
+      where: { appKey, published: true },
+      include: { questions: true },
+    });
+    return toQuizQuestions(topics.flatMap((topic) => topic.questions));
   });
-  return toQuizQuestions(topics.flatMap((topic) => topic.questions));
 }
 
 export async function getTestsOverview(appKey: string) {
-  const subjects = await db.subject.findMany({
-    where: { appKey },
-    orderBy: { order: "asc" },
-    include: {
-      classes: {
-        orderBy: { order: "asc" },
-        include: {
-          chapters: {
-            include: { topics: { where: { published: true }, include: { questions: { select: { id: true } } } } },
+  return cached(`tests-overview:${appKey}`, CONTENT_TTL_MS, async () => {
+    const subjects = await db.subject.findMany({
+      where: { appKey },
+      orderBy: { order: "asc" },
+      include: {
+        classes: {
+          orderBy: { order: "asc" },
+          include: {
+            chapters: {
+              include: { topics: { where: { published: true }, include: { questions: { select: { id: true } } } } },
+            },
           },
         },
       },
-    },
-  });
+    });
 
-  return subjects.map((subject) => {
-    const classes = subject.classes.map((klass) => ({
-      id: klass.id,
-      title: klass.title,
-      questionCount: klass.chapters.reduce(
-        (sum, chapter) => sum + chapter.topics.reduce((s, topic) => s + topic.questions.length, 0),
-        0,
-      ),
-    }));
-    return {
-      key: subject.key,
-      title: subject.title,
-      titleUz: subject.titleUz,
-      classes,
-      questionCount: classes.reduce((sum, klass) => sum + klass.questionCount, 0),
-    };
+    return subjects.map((subject) => {
+      const classes = subject.classes.map((klass) => ({
+        id: klass.id,
+        title: klass.title,
+        questionCount: klass.chapters.reduce(
+          (sum, chapter) => sum + chapter.topics.reduce((s, topic) => s + topic.questions.length, 0),
+          0,
+        ),
+      }));
+      return {
+        key: subject.key,
+        title: subject.title,
+        titleUz: subject.titleUz,
+        classes,
+        questionCount: classes.reduce((sum, klass) => sum + klass.questionCount, 0),
+      };
+    });
   });
 }
 

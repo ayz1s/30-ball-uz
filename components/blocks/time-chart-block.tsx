@@ -3,20 +3,21 @@
 import { useState } from "react";
 import type { z } from "zod";
 import type { timeChartBlockSchema } from "@/content/schema/blocks";
+import { t, type Locale } from "@/lib/i18n";
 
 type TimeChartBlockData = z.infer<typeof timeChartBlockSchema>;
 
-export function TimeChartBlock({ block }: { block: TimeChartBlockData }) {
+export function TimeChartBlock({ block, locale }: { block: TimeChartBlockData; locale: Locale }) {
   const [year, setYear] = useState(block.startYear);
   const span = block.endYear - block.startYear || 1;
 
   return (
-    <div className="space-y-4 rounded-xl border border-neutral-200 p-4">
+    <div className="space-y-4 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
       <div className="space-y-2">
         {block.lanes.map((lane, li) => (
           <div key={li} className="space-y-1">
-            <p className="text-xs font-medium text-neutral-500">{lane.label}</p>
-            <div className="relative h-8 rounded-full bg-neutral-100">
+            <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">{lane.label}</p>
+            <div className="relative h-8 rounded-full bg-neutral-100 dark:bg-neutral-800">
               {lane.items.map((item, ii) => {
                 const left = ((item.startYear - block.startYear) / span) * 100;
                 const width = Math.max(((item.endYear - item.startYear) / span) * 100, 6);
@@ -26,7 +27,7 @@ export function TimeChartBlock({ block }: { block: TimeChartBlockData }) {
                     key={ii}
                     title={item.title}
                     className={`absolute top-1 h-6 overflow-hidden rounded-full px-2 text-[10px] leading-6 text-white ${
-                      active ? "bg-blue-600" : "bg-neutral-300"
+                      active ? "bg-blue-600" : "bg-neutral-300 dark:bg-neutral-600"
                     }`}
                     style={{ left: `${left}%`, width: `${width}%` }}
                   >
@@ -46,7 +47,9 @@ export function TimeChartBlock({ block }: { block: TimeChartBlockData }) {
         onChange={(e) => setYear(Number(e.target.value))}
         className="w-full"
       />
-      <p className="text-center text-sm font-medium text-neutral-700">Год: {year}</p>
+      <p className="text-center text-sm font-medium text-neutral-700 dark:text-neutral-300">
+        {t(locale, "blockTimeChartYear", { year: String(year) })}
+      </p>
     </div>
   );
 }

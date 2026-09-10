@@ -16,7 +16,7 @@ export default async function TestsPage() {
 
   return (
     <main className="min-h-dvh px-6 py-8 pb-24">
-      <h1 className="text-xl font-semibold text-neutral-900">{t(locale, "navTests")}</h1>
+      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "navTests")}</h1>
 
       <Link
         href="/tests/full"
@@ -33,9 +33,9 @@ export default async function TestsPage() {
           return (
             <div key={subject.key}>
               <div className="flex items-baseline justify-between">
-                <h2 className="text-sm font-medium text-neutral-500">{title}</h2>
+                <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">{title}</h2>
                 {subject.questionCount > 0 && (
-                  <Link href={`/tests/subject/${subject.key}`} className="text-xs font-medium text-blue-600">
+                  <Link href={`/tests/subject/${subject.key}`} className="text-xs font-medium text-blue-600 dark:text-blue-400">
                     {t(locale, "testsSubjectVariant")}
                   </Link>
                 )}
@@ -45,12 +45,12 @@ export default async function TestsPage() {
                   <Link
                     key={klass.id}
                     href={`/tests/class/${klass.id}`}
-                    className={`flex min-h-12 items-center justify-between rounded-xl border border-neutral-200 px-4 py-3 ${
+                    className={`flex min-h-12 items-center justify-between rounded-xl border border-neutral-200 dark:border-neutral-700 px-4 py-3 ${
                       klass.questionCount === 0 ? "pointer-events-none opacity-40" : ""
                     }`}
                   >
-                    <span className="text-neutral-900">{klass.title}</span>
-                    <span className="text-xs text-neutral-500">
+                    <span className="text-neutral-900 dark:text-neutral-100">{klass.title}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
                       {t(locale, "testsQuestionCount", { count: String(klass.questionCount) })}
                     </span>
                   </Link>

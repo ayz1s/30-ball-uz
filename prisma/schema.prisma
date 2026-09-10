@@ -142,3 +142,14 @@ model ErrorItem {
   @@unique([userId, questionId])
   @@index([userId, status])
 }
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  appKey    String
+  userId    String?
+  type      String // topic_opened | topic_closed | quiz_started | quiz_finished
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  @@index([appKey, type, createdAt])
+}

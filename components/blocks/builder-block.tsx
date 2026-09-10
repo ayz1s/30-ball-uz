@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { z } from "zod";
 import type { builderBlockSchema } from "@/content/schema/blocks";
+import { t, type Locale } from "@/lib/i18n";
 
 type BuilderBlockData = z.infer<typeof builderBlockSchema>;
 type Piece = { part: string; correct: boolean; whyWrong: string };
@@ -16,7 +17,7 @@ function shuffle<T>(items: T[]): T[] {
   return arr;
 }
 
-export function BuilderBlock({ block }: { block: BuilderBlockData }) {
+export function BuilderBlock({ block, locale }: { block: BuilderBlockData; locale: Locale }) {
   const pool = useMemo<Piece[]>(
     () =>
       shuffle([
@@ -34,7 +35,7 @@ export function BuilderBlock({ block }: { block: BuilderBlockData }) {
     if (done) return;
     const expected = block.correctParts[pickedCount];
     if (piece.part !== expected || !piece.correct) {
-      setError(piece.whyWrong || `«${piece.part}» здесь не подходит.`);
+      setError(piece.whyWrong || t(locale, "blockBuilderWrongPart", { part: piece.part }));
       return;
     }
     setError(null);
@@ -43,8 +44,10 @@ export function BuilderBlock({ block }: { block: BuilderBlockData }) {
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 p-4">
-      <p className="text-center text-2xl font-semibold text-neutral-900">{pickedParts.join("") || "…"}</p>
+    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+      <p className="text-center text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
+        {pickedParts.join("") || "…"}
+      </p>
       <div className="flex flex-wrap justify-center gap-2">
         {pool.map((piece, i) => (
           <button
@@ -52,14 +55,18 @@ export function BuilderBlock({ block }: { block: BuilderBlockData }) {
             type="button"
             disabled={done}
             onClick={() => pick(piece)}
-            className="min-h-12 rounded-lg bg-neutral-100 px-4 py-3 text-lg font-medium text-neutral-800 disabled:opacity-40"
+            className="min-h-12 rounded-lg bg-neutral-100 dark:bg-neutral-800 px-4 py-3 text-lg font-medium text-neutral-800 dark:text-neutral-200 disabled:opacity-40"
           >
             {piece.part}
           </button>
         ))}
       </div>
-      {error && <p className="text-sm text-red-700">{error}</p>}
-      {done && <p className="text-sm font-medium text-green-700">Готово: {block.word}</p>}
+      {error && <p className="text-sm text-red-700 dark:text-red-400">{error}</p>}
+      {done && (
+        <p className="text-sm font-medium text-green-700 dark:text-green-400">
+          {t(locale, "blockBuilderDone", { word: block.word })}
+        </p>
+      )}
     </div>
   );
 }

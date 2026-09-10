@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { cached } from "@/lib/cache";
+
+const CONTENT_TTL_MS = 60_000;
 
 export type TopicStatus = "new" | "opened" | "done" | "known";
 
@@ -10,20 +13,29 @@ export interface HomeSubjectSummary {
   done: number;
 }
 
-export async function getHomeSummary(appKey: string, userId: string | null) {
-  const subjects = await db.subject.findMany({
-    where: { appKey },
-    orderBy: { order: "asc" },
-    include: {
-      classes: {
-        include: {
-          chapters: {
-            include: { topics: { where: { published: true }, select: { id: true } } },
+// Структура предметов/тем меняется только через content:import — кэшируем
+// её отдельно от прогресса пользователя, который всегда читаем свежим
+// (раздел 9 ТЗ: контент кэшируется, персональные данные — нет).
+async function getHomeStructure(appKey: string) {
+  return cached(`home-structure:${appKey}`, CONTENT_TTL_MS, () =>
+    db.subject.findMany({
+      where: { appKey },
+      orderBy: { order: "asc" },
+      include: {
+        classes: {
+          include: {
+            chapters: {
+              include: { topics: { where: { published: true }, select: { id: true } } },
+            },
           },
         },
       },
-    },
-  });
+    }),
+  );
+}
+
+export async function getHomeSummary(appKey: string, userId: string | null) {
+  const subjects = await getHomeStructure(appKey);
 
   const topicToSubjectKey = new Map<string, string>();
   for (const subject of subjects) {
@@ -69,21 +81,27 @@ export async function getHomeSummary(appKey: string, userId: string | null) {
   };
 }
 
-export async function getSubjectDetail(appKey: string, subjectKey: string, userId: string | null) {
-  const subject = await db.subject.findUnique({
-    where: { appKey_key: { appKey, key: subjectKey } },
-    include: {
-      classes: {
-        orderBy: { order: "asc" },
-        include: {
-          chapters: {
-            orderBy: { order: "asc" },
-            include: { topics: { where: { published: true }, select: { id: true } } },
+async function getSubjectStructure(appKey: string, subjectKey: string) {
+  return cached(`subject-structure:${appKey}:${subjectKey}`, CONTENT_TTL_MS, () =>
+    db.subject.findUnique({
+      where: { appKey_key: { appKey, key: subjectKey } },
+      include: {
+        classes: {
+          orderBy: { order: "asc" },
+          include: {
+            chapters: {
+              orderBy: { order: "asc" },
+              include: { topics: { where: { published: true }, select: { id: true } } },
+            },
           },
         },
       },
-    },
-  });
+    }),
+  );
+}
+
+export async function getSubjectDetail(appKey: string, subjectKey: string, userId: string | null) {
+  const subject = await getSubjectStructure(appKey, subjectKey);
   if (!subject) return null;
 
   const allTopicIds = subject.classes.flatMap((klass) =>
@@ -119,17 +137,23 @@ export async function getSubjectDetail(appKey: string, subjectKey: string, userI
   };
 }
 
-export async function getClassDetail(classId: string, userId: string | null) {
-  const klass = await db.class.findUnique({
-    where: { id: classId },
-    include: {
-      subject: true,
-      chapters: {
-        orderBy: { order: "asc" },
-        include: { topics: { where: { published: true }, orderBy: { order: "asc" } } },
+async function getClassStructure(classId: string) {
+  return cached(`class-structure:${classId}`, CONTENT_TTL_MS, () =>
+    db.class.findUnique({
+      where: { id: classId },
+      include: {
+        subject: true,
+        chapters: {
+          orderBy: { order: "asc" },
+          include: { topics: { where: { published: true }, orderBy: { order: "asc" } } },
+        },
       },
-    },
-  });
+    }),
+  );
+}
+
+export async function getClassDetail(classId: string, userId: string | null) {
+  const klass = await getClassStructure(classId);
   if (!klass) return null;
 
   const topicIds = klass.chapters.flatMap((chapter) => chapter.topics.map((topic) => topic.id));
@@ -159,21 +183,27 @@ export async function getClassDetail(classId: string, userId: string | null) {
   };
 }
 
-export async function getSubjectTopicsFlat(appKey: string, subjectKey: string, userId: string | null) {
-  const subject = await db.subject.findUnique({
-    where: { appKey_key: { appKey, key: subjectKey } },
-    include: {
-      classes: {
-        orderBy: { order: "asc" },
-        include: {
-          chapters: {
-            orderBy: { order: "asc" },
-            include: { topics: { where: { published: true }, orderBy: { order: "asc" } } },
+async function getSubjectTopicsStructure(appKey: string, subjectKey: string) {
+  return cached(`subject-topics-structure:${appKey}:${subjectKey}`, CONTENT_TTL_MS, () =>
+    db.subject.findUnique({
+      where: { appKey_key: { appKey, key: subjectKey } },
+      include: {
+        classes: {
+          orderBy: { order: "asc" },
+          include: {
+            chapters: {
+              orderBy: { order: "asc" },
+              include: { topics: { where: { published: true }, orderBy: { order: "asc" } } },
+            },
           },
         },
       },
-    },
-  });
+    }),
+  );
+}
+
+export async function getSubjectTopicsFlat(appKey: string, subjectKey: string, userId: string | null) {
+  const subject = await getSubjectTopicsStructure(appKey, subjectKey);
   if (!subject) return null;
 
   const topics = subject.classes.flatMap((klass) =>
@@ -207,16 +237,18 @@ export async function getSubjectTopicsFlat(appKey: string, subjectKey: string, u
 // appKey ограничивает выборку темами текущего приложения (раздел 2 ТЗ) —
 // порядок глобальный: предмет -> класс -> глава -> тема, все по полю order.
 export async function getNextTopicSlug(appKey: string, currentTopicId: string): Promise<string | null> {
-  const topics = await db.topic.findMany({
-    where: { appKey, published: true },
-    orderBy: [
-      { chapter: { class: { subject: { order: "asc" } } } },
-      { chapter: { class: { order: "asc" } } },
-      { chapter: { order: "asc" } },
-      { order: "asc" },
-    ],
-    select: { id: true, slug: true },
-  });
+  const topics = await cached(`topic-order:${appKey}`, CONTENT_TTL_MS, () =>
+    db.topic.findMany({
+      where: { appKey, published: true },
+      orderBy: [
+        { chapter: { class: { subject: { order: "asc" } } } },
+        { chapter: { class: { order: "asc" } } },
+        { chapter: { order: "asc" } },
+        { order: "asc" },
+      ],
+      select: { id: true, slug: true },
+    }),
+  );
 
   const index = topics.findIndex((topic) => topic.id === currentTopicId);
   if (index === -1 || index === topics.length - 1) return null;

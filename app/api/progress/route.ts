@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/auth";
+import { getAppConfig } from "@/lib/config";
 import { isRateLimited } from "@/lib/rate-limit";
+import { logEvent } from "@/lib/analytics";
 
 export const runtime = "nodejs";
 
@@ -38,6 +40,11 @@ export async function POST(req: NextRequest) {
     update: { status, doneAt: status === "done" ? new Date() : undefined },
     create: { userId, topicId, status, doneAt: status === "done" ? new Date() : null },
   });
+
+  if (status === "done") {
+    const { key: appKey } = getAppConfig();
+    await logEvent(appKey, userId, "topic_closed", { topicId });
+  }
 
   return NextResponse.json({ ok: true });
 }

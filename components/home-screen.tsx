@@ -43,10 +43,19 @@ function useSafeRawInitData(): string | undefined {
   }
 }
 
-function ScreenState({ text }: { text: string }) {
+function ScreenState({ text, onRetry, retryText }: { text: string; onRetry?: () => void; retryText?: string }) {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
-      <p className="text-sm text-neutral-500">{text}</p>
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 text-center">
+      <p className="text-sm text-neutral-500 dark:text-neutral-400">{text}</p>
+      {onRetry && (
+        <button
+          type="button"
+          onClick={onRetry}
+          className="rounded-lg bg-neutral-100 dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-800 dark:text-neutral-200"
+        >
+          {retryText}
+        </button>
+      )}
     </main>
   );
 }
@@ -59,7 +68,7 @@ function daysUntil(dateIso: string): number {
 export function HomeScreen() {
   const rawInitData = useSafeRawInitData();
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["auth", rawInitData],
     queryFn: () => fetchAuth(rawInitData!),
     enabled: Boolean(rawInitData),
@@ -73,7 +82,9 @@ export function HomeScreen() {
   }
 
   if (isError || !data) {
-    return <ScreenState text={t(locale, "authError")} />;
+    return (
+      <ScreenState text={t(locale, "authError")} onRetry={() => refetch()} retryText={t(locale, "retryButton")} />
+    );
   }
 
   const appConfig = getAppConfigByKey(process.env.NEXT_PUBLIC_APP_KEY!);
@@ -81,25 +92,25 @@ export function HomeScreen() {
 
   return (
     <main className="min-h-dvh px-6 py-8 pb-24">
-      <h1 className="text-xl font-semibold text-neutral-900">
+      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
         {t(locale, "greeting", { name: data.firstName ?? "" })}
       </h1>
 
       <div className="mt-4 flex gap-3 text-sm">
-        <div className="flex-1 rounded-xl bg-blue-50 p-3 text-blue-900">
+        <div className="flex-1 rounded-xl bg-blue-50 dark:bg-blue-950 p-3 text-blue-900 dark:text-blue-200">
           {t(locale, "topicsDoneOfTotal", {
             done: String(data.home.doneTotal),
             total: String(data.home.totalTopics),
           })}
         </div>
-        <div className="flex-1 rounded-xl bg-neutral-50 p-3 text-neutral-700">
+        <div className="flex-1 rounded-xl bg-neutral-50 dark:bg-neutral-900 p-3 text-neutral-700 dark:text-neutral-300">
           {t(locale, "daysToExam", { days: String(days) })}
         </div>
       </div>
 
       <div className="mt-6 space-y-3">
         {data.home.subjects.length === 0 && (
-          <p className="text-sm text-neutral-500">{t(locale, "homeEmptySubjects")}</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "homeEmptySubjects")}</p>
         )}
         {data.home.subjects.map((subject) => {
           const title = locale === "ru" ? subject.title : subject.titleUz;
@@ -108,15 +119,15 @@ export function HomeScreen() {
             <Link
               key={subject.key}
               href={`/subject/${subject.key}`}
-              className="block rounded-xl border border-neutral-200 p-4"
+              className="block rounded-xl border border-neutral-200 dark:border-neutral-700 p-4"
             >
               <div className="flex items-baseline justify-between">
-                <span className="font-medium text-neutral-900">{title}</span>
-                <span className="text-xs text-neutral-500">
+                <span className="font-medium text-neutral-900 dark:text-neutral-100">{title}</span>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400">
                   {subject.done}/{subject.total}
                 </span>
               </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-100">
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
                 <div className="h-full rounded-full bg-blue-600" style={{ width: `${pct}%` }} />
               </div>
             </Link>

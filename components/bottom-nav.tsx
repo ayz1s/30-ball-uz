@@ -15,7 +15,7 @@ export function BottomNav({ locale, errorCount = 0 }: { locale: Locale; errorCou
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 flex border-t border-neutral-200 bg-white pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed inset-x-0 bottom-0 flex border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 pb-[env(safe-area-inset-bottom)]">
       {ITEMS.map((item) => {
         const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
         return (
@@ -23,7 +23,7 @@ export function BottomNav({ locale, errorCount = 0 }: { locale: Locale; errorCou
             key={item.href}
             href={item.href}
             className={`relative flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-xs font-medium ${
-              active ? "text-blue-700" : "text-neutral-500"
+              active ? "text-blue-700 dark:text-blue-400" : "text-neutral-500 dark:text-neutral-400"
             }`}
           >
             <span className="relative text-lg leading-none">

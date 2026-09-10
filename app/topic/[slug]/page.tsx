@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getNextTopicSlug } from "@/lib/curriculum";
 import { getOpenErrorCount } from "@/lib/quiz";
 import { recordTopicOpened } from "@/lib/progress";
+import { logEvent } from "@/lib/analytics";
 import { TopicScreen } from "@/components/topic-screen";
 import type { RawBlock } from "@/components/blocks/registry";
 import type { TopicQuestionData } from "@/components/topic-question";
@@ -26,14 +27,17 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   if (!topic) {
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
-        <p className="text-sm text-neutral-500">{t(locale, "topicNotFound")}</p>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "topicNotFound")}</p>
       </main>
     );
   }
 
   let initialDone = false;
   if (user) {
-    await recordTopicOpened(user.id, topic.id);
+    await Promise.all([
+      recordTopicOpened(user.id, topic.id),
+      logEvent(appKey, user.id, "topic_opened", { topicId: topic.id, slug: topic.slug }),
+    ]);
     const progress = await db.progress.findUnique({
       where: { userId_topicId: { userId: user.id, topicId: topic.id } },
       select: { status: true },

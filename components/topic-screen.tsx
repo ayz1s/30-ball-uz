@@ -40,6 +40,7 @@ export function TopicScreen({
   const [tab, setTab] = useState<TabId>("theory");
   const [done, setDone] = useState(initialDone);
   const [saving, setSaving] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
 
   const blocksByTab: Record<Exclude<TabId, "questions">, RawBlock[]> = {
     theory: [],
@@ -54,6 +55,7 @@ export function TopicScreen({
   async function markDone() {
     if (done || saving) return;
     setSaving(true);
+    setSaveFailed(false);
     setDone(true);
     try {
       const res = await fetch("/api/progress", {
@@ -64,6 +66,7 @@ export function TopicScreen({
       if (!res.ok) throw new Error("failed");
     } catch {
       setDone(false);
+      setSaveFailed(true);
     } finally {
       setSaving(false);
     }
@@ -71,18 +74,18 @@ export function TopicScreen({
 
   return (
     <main className="min-h-dvh pb-24">
-      <header className="border-b border-neutral-100 px-6 py-4">
-        <h1 className="text-lg font-semibold text-neutral-900">{title}</h1>
+      <header className="border-b border-neutral-100 dark:border-neutral-800 px-6 py-4">
+        <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h1>
       </header>
 
-      <nav className="flex gap-1 border-b border-neutral-100 px-4">
+      <nav className="flex gap-1 border-b border-neutral-100 dark:border-neutral-800 px-4">
         {TAB_ORDER.map((id) => (
           <button
             key={id}
             type="button"
             onClick={() => setTab(id)}
             className={`min-h-11 flex-1 rounded-t-lg px-2 py-3 text-sm font-medium ${
-              tab === id ? "border-b-2 border-blue-600 text-blue-700" : "text-neutral-500"
+              tab === id ? "border-b-2 border-blue-600 text-blue-700 dark:text-blue-400" : "text-neutral-500 dark:text-neutral-400"
             }`}
           >
             {t(locale, TAB_LABEL_KEY[id])}
@@ -94,10 +97,10 @@ export function TopicScreen({
         {tab === "questions"
           ? questions.length > 0
             ? questions.map((q) => <TopicQuestion key={q.id} question={q} locale={locale} />)
-            : <p className="px-2 py-8 text-center text-sm text-neutral-500">{t(locale, "tabEmpty")}</p>
+            : <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "tabEmpty")}</p>
           : blocksByTab[tab].length > 0
-            ? blocksByTab[tab].map((block, i) => <BlockRenderer key={i} block={block} />)
-            : <p className="px-2 py-8 text-center text-sm text-neutral-500">{t(locale, "tabEmpty")}</p>}
+            ? blocksByTab[tab].map((block, i) => <BlockRenderer key={i} block={block} locale={locale} />)
+            : <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "tabEmpty")}</p>}
       </div>
 
       <div className="space-y-2 px-4 pt-2">
@@ -106,11 +109,19 @@ export function TopicScreen({
           onClick={markDone}
           disabled={done}
           className={`min-h-12 w-full rounded-xl text-sm font-medium ${
-            done ? "bg-green-100 text-green-800" : "bg-neutral-100 text-neutral-800"
+            done ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
           }`}
         >
           {done ? t(locale, "topicDoneMark") : t(locale, "topicDoneButton")}
         </button>
+        {saveFailed && (
+          <p className="text-center text-sm text-red-700 dark:text-red-400">
+            {t(locale, "saveError")}{" "}
+            <button type="button" onClick={markDone} className="underline">
+              {t(locale, "retryButton")}
+            </button>
+          </p>
+        )}
 
         {nextTopic ? (
           <Link
@@ -120,7 +131,7 @@ export function TopicScreen({
             {t(locale, "nextTopicButton", { title: nextTopic.title })}
           </Link>
         ) : (
-          <p className="text-center text-sm text-neutral-500">{t(locale, "nextTopicNone")}</p>
+          <p className="text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "nextTopicNone")}</p>
         )}
       </div>
 

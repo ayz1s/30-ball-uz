@@ -12,7 +12,7 @@ export default async function ErrorsPage() {
 
   return (
     <main className="min-h-dvh px-6 py-8 pb-24">
-      <h1 className="mb-4 text-xl font-semibold text-neutral-900">{t(locale, "navErrors")}</h1>
+      <h1 className="mb-4 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "navErrors")}</h1>
       <ErrorsList open={open} fixed={fixed} locale={locale} />
       <BottomNav locale={locale} errorCount={open.length} />
     </main>

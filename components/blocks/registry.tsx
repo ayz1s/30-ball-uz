@@ -19,9 +19,10 @@ import { BuilderBlock } from "./builder-block";
 import { WorkCardBlock } from "./work-card-block";
 import { UnknownBlock } from "./unknown-block";
 import type { BlockType } from "@/content/schema/blocks";
+import type { Locale } from "@/lib/i18n";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const registry: Record<BlockType, ComponentType<{ block: any }>> = {
+const registry: Record<BlockType, ComponentType<{ block: any; locale: Locale }>> = {
   text: TextBlock,
   rule: RuleBlock,
   flashcards: FlashcardsBlock,
@@ -50,11 +51,11 @@ export interface RawBlock {
 // Блоки хранятся в базе как обычный Json, поэтому диспетчеризация идёт по
 // строке type в рантайме, а не через строгую zod-схему (та валидирует
 // только на импорте контента) — неизвестный тип не должен ронять страницу.
-export function BlockRenderer({ block }: { block: RawBlock }) {
+export function BlockRenderer({ block, locale }: { block: RawBlock; locale: Locale }) {
   const Component = registry[block.type as BlockType];
   if (!Component) {
     console.warn(`Неизвестный тип блока в контенте: "${block.type}"`);
-    return <UnknownBlock type={block.type} />;
+    return <UnknownBlock type={block.type} locale={locale} />;
   }
-  return <Component block={block} />;
+  return <Component block={block} locale={locale} />;
 }

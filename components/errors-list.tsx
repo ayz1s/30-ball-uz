@@ -33,7 +33,7 @@ export function ErrorsList({
           type="button"
           onClick={() => setTab("open")}
           className={`min-h-11 flex-1 rounded-lg text-sm font-medium ${
-            tab === "open" ? "bg-blue-600 text-white" : "bg-neutral-100 text-neutral-700"
+            tab === "open" ? "bg-blue-600 text-white" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
           }`}
         >
           {t(locale, "errorsOpen", { count: String(openItems.length) })}
@@ -42,7 +42,7 @@ export function ErrorsList({
           type="button"
           onClick={() => setTab("fixed")}
           className={`min-h-11 flex-1 rounded-lg text-sm font-medium ${
-            tab === "fixed" ? "bg-blue-600 text-white" : "bg-neutral-100 text-neutral-700"
+            tab === "fixed" ? "bg-blue-600 text-white" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
           }`}
         >
           {t(locale, "errorsFixed", { count: String(fixedItems.length) })}
@@ -50,7 +50,7 @@ export function ErrorsList({
       </div>
 
       {items.length === 0 ? (
-        <p className="px-2 py-8 text-center text-sm text-neutral-500">
+        <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">
           {t(locale, tab === "open" ? "errorsOpenEmpty" : "errorsFixedEmpty")}
         </p>
       ) : (
