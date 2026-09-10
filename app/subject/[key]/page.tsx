@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAppConfig } from "@/lib/config";
 import { getCurrentUser } from "@/lib/auth";
 import { getSubjectDetail } from "@/lib/curriculum";
+import { getOpenErrorCount } from "@/lib/quiz";
 import { BottomNav } from "@/components/bottom-nav";
 import { t, type Locale } from "@/lib/i18n";
 
@@ -10,6 +11,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ key: s
   const { key: appKey } = getAppConfig();
   const user = await getCurrentUser();
   const locale: Locale = user?.languageCode === "ru" ? "ru" : "uz";
+  const errorCount = user ? await getOpenErrorCount(user.id) : 0;
 
   const subject = await getSubjectDetail(appKey, key, user?.id ?? null);
 
@@ -17,7 +19,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ key: s
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center px-6 pb-20 text-center">
         <p className="text-sm text-neutral-500">{t(locale, "subjectNotFound")}</p>
-        <BottomNav locale={locale} />
+        <BottomNav locale={locale} errorCount={errorCount} />
       </main>
     );
   }
@@ -73,7 +75,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ key: s
         })}
       </div>
 
-      <BottomNav locale={locale} />
+      <BottomNav locale={locale} errorCount={errorCount} />
     </main>
   );
 }

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { getAppConfig } from "@/lib/config";
 import { getCurrentUser } from "@/lib/auth";
 import { getNextTopicSlug } from "@/lib/curriculum";
+import { getOpenErrorCount } from "@/lib/quiz";
 import { recordTopicOpened } from "@/lib/progress";
 import { TopicScreen } from "@/components/topic-screen";
 import type { RawBlock } from "@/components/blocks/registry";
@@ -41,9 +42,10 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   }
 
   const nextSlug = await getNextTopicSlug(appKey, topic.id);
-  const nextTopic = nextSlug
-    ? await db.topic.findUnique({ where: { slug: nextSlug }, select: { slug: true, title: true } })
-    : null;
+  const [nextTopic, errorCount] = await Promise.all([
+    nextSlug ? db.topic.findUnique({ where: { slug: nextSlug }, select: { slug: true, title: true } }) : null,
+    user ? getOpenErrorCount(user.id) : 0,
+  ]);
 
   const questions: TopicQuestionData[] = topic.questions.map((question) => ({
     id: question.id,
@@ -62,6 +64,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       locale={locale}
       initialDone={initialDone}
       nextTopic={nextTopic}
+      errorCount={errorCount}
     />
   );
 }

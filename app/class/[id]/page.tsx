@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { getClassDetail, type TopicStatus } from "@/lib/curriculum";
+import { getOpenErrorCount } from "@/lib/quiz";
 import { BottomNav } from "@/components/bottom-nav";
 import { t, type Locale } from "@/lib/i18n";
 
@@ -22,6 +23,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
   const { id } = await params;
   const user = await getCurrentUser();
   const locale: Locale = user?.languageCode === "ru" ? "ru" : "uz";
+  const errorCount = user ? await getOpenErrorCount(user.id) : 0;
 
   const klass = await getClassDetail(id, user?.id ?? null);
 
@@ -29,7 +31,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center px-6 pb-20 text-center">
         <p className="text-sm text-neutral-500">{t(locale, "classNotFound")}</p>
-        <BottomNav locale={locale} />
+        <BottomNav locale={locale} errorCount={errorCount} />
       </main>
     );
   }
@@ -65,7 +67,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
         ))}
       </div>
 
-      <BottomNav locale={locale} />
+      <BottomNav locale={locale} errorCount={errorCount} />
     </main>
   );
 }

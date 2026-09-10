@@ -75,6 +75,7 @@ model Topic {
 
   chapter   Chapter    @relation(fields: [chapterId], references: [id])
   questions Question[]
+  progress  Progress[]
 
   @@index([chapterId, order])
   @@index([appKey, published])
@@ -104,7 +105,8 @@ model Progress {
   seenAt  DateTime  @default(now())
   doneAt  DateTime?
 
-  user User @relation(fields: [userId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  topic Topic @relation(fields: [topicId], references: [id])
 
   @@unique([userId, topicId])
   @@index([userId, status])

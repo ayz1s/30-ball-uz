@@ -5,6 +5,7 @@ import { createSessionForTelegramUser } from "@/lib/auth";
 import { isRateLimited } from "@/lib/rate-limit";
 import { getAppConfig } from "@/lib/config";
 import { getHomeSummary } from "@/lib/curriculum";
+import { getOpenErrorCount } from "@/lib/quiz";
 
 export const runtime = "nodejs";
 
@@ -38,11 +39,12 @@ export async function POST(req: NextRequest) {
 
   const user = await createSessionForTelegramUser(result.user);
   const { key: appKey } = getAppConfig();
-  const home = await getHomeSummary(appKey, user.id);
+  const [home, errorCount] = await Promise.all([getHomeSummary(appKey, user.id), getOpenErrorCount(user.id)]);
 
   return NextResponse.json({
     firstName: user.firstName,
     languageCode: user.languageCode,
     home,
+    errorCount,
   });
 }

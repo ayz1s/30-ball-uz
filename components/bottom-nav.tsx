@@ -11,7 +11,7 @@ const ITEMS = [
   { href: "/review", labelKey: "navReview" as const, icon: "🔁" },
 ];
 
-export function BottomNav({ locale }: { locale: Locale }) {
+export function BottomNav({ locale, errorCount = 0 }: { locale: Locale; errorCount?: number }) {
   const pathname = usePathname();
 
   return (
@@ -22,11 +22,18 @@ export function BottomNav({ locale }: { locale: Locale }) {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-xs font-medium ${
+            className={`relative flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-xs font-medium ${
               active ? "text-blue-700" : "text-neutral-500"
             }`}
           >
-            <span className="text-lg leading-none">{item.icon}</span>
+            <span className="relative text-lg leading-none">
+              {item.icon}
+              {item.href === "/errors" && errorCount > 0 && (
+                <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold text-white">
+                  {errorCount > 99 ? "99+" : errorCount}
+                </span>
+              )}
+            </span>
             {t(locale, item.labelKey)}
           </Link>
         );

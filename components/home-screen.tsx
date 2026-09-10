@@ -22,6 +22,7 @@ interface AuthResponse {
   firstName: string | null;
   languageCode: string;
   home: { subjects: HomeSubject[]; doneTotal: number; totalTopics: number };
+  errorCount: number;
 }
 
 async function fetchAuth(initData: string): Promise<AuthResponse> {
@@ -123,7 +124,7 @@ export function HomeScreen() {
         })}
       </div>
 
-      <BottomNav locale={locale} />
+      <BottomNav locale={locale} errorCount={data.errorCount} />
     </main>
   );
 }

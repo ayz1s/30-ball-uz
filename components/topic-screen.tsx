@@ -26,6 +26,7 @@ export function TopicScreen({
   locale,
   initialDone,
   nextTopic,
+  errorCount,
 }: {
   topicId: string;
   title: string;
@@ -34,6 +35,7 @@ export function TopicScreen({
   locale: Locale;
   initialDone: boolean;
   nextTopic: { slug: string; title: string } | null;
+  errorCount: number;
 }) {
   const [tab, setTab] = useState<TabId>("theory");
   const [done, setDone] = useState(initialDone);
@@ -122,7 +124,7 @@ export function TopicScreen({
         )}
       </div>
 
-      <BottomNav locale={locale} />
+      <BottomNav locale={locale} errorCount={errorCount} />
     </main>
   );
 }
