@@ -1,14 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useRawInitData } from "@telegram-apps/sdk-react";
 import { useQuery } from "@tanstack/react-query";
-import { ensureTelegramSdkInit } from "@/lib/telegram-boot";
+import { getRawInitData } from "@/lib/telegram-env";
 import { t, type Locale } from "@/lib/i18n";
 import { getAppConfigByKey } from "@/apps.config";
 import { BottomNav } from "@/components/bottom-nav";
-
-ensureTelegramSdkInit();
 
 interface HomeSubject {
   key: string;
@@ -35,12 +33,12 @@ async function fetchAuth(initData: string): Promise<AuthResponse> {
   return res.json();
 }
 
-function useSafeRawInitData(): string | undefined {
-  try {
-    return useRawInitData();
-  } catch {
-    return undefined;
-  }
+// TelegramGate уже убедился, что мы внутри Telegram, до монтирования этого
+// компонента — читаем initData один раз при монтировании, без хрупкой
+// обвязки SDK (см. lib/telegram-env.ts).
+function useRawInitData(): string | undefined {
+  const [initData] = useState<string | undefined>(() => getRawInitData());
+  return initData;
 }
 
 function ScreenState({ text, onRetry, retryText }: { text: string; onRetry?: () => void; retryText?: string }) {
@@ -66,7 +64,7 @@ function daysUntil(dateIso: string): number {
 }
 
 export function HomeScreen() {
-  const rawInitData = useSafeRawInitData();
+  const rawInitData = useRawInitData();
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["auth", rawInitData],

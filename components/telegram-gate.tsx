@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { isTelegramEnvironment } from "@/lib/telegram-env";
 import { HomeScreen } from "@/components/home-screen";
 import { OpenInTelegram } from "@/components/open-in-telegram";
@@ -22,6 +22,14 @@ function getServerSnapshot(): "checking" {
 
 export function TelegramGate() {
   const environment = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  useEffect(() => {
+    if (environment !== "telegram") return;
+    // Убирает индикатор загрузки Telegram и разворачивает мини-апп на всю
+    // высоту — без этого приложение остаётся в маленьком окне.
+    window.Telegram?.WebApp?.ready?.();
+    window.Telegram?.WebApp?.expand?.();
+  }, [environment]);
 
   if (environment === "checking") return null;
   if (environment === "browser") return <OpenInTelegram />;

@@ -8,6 +8,8 @@ declare global {
         colorScheme?: "light" | "dark";
         onEvent?: (event: string, handler: () => void) => void;
         offEvent?: (event: string, handler: () => void) => void;
+        ready?: () => void;
+        expand?: () => void;
       };
     };
   }
