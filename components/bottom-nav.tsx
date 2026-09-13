@@ -5,39 +5,38 @@ import { usePathname } from "next/navigation";
 import { t, type Locale } from "@/lib/i18n";
 
 const ITEMS = [
-  { href: "/", labelKey: "navSubjects" as const, icon: "📚" },
-  { href: "/tests", labelKey: "navTests" as const, icon: "📝" },
-  { href: "/errors", labelKey: "navErrors" as const, icon: "⚠️" },
-  { href: "/review", labelKey: "navReview" as const, icon: "🔁" },
+  { href: "/", labelKey: "navSubjects" as const },
+  { href: "/tests", labelKey: "navTests" as const },
+  { href: "/errors", labelKey: "navErrors" as const },
+  { href: "/review", labelKey: "navReviewShort" as const },
 ];
 
 export function BottomNav({ locale, errorCount = 0 }: { locale: Locale; errorCount?: number }) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 flex border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 pb-[env(safe-area-inset-bottom)]">
-      {ITEMS.map((item) => {
-        const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`relative flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 text-xs font-medium ${
-              active ? "text-blue-700 dark:text-blue-400" : "text-neutral-500 dark:text-neutral-400"
-            }`}
-          >
-            <span className="relative text-lg leading-none">
-              {item.icon}
+    <nav className="fixed inset-x-0 bottom-0 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 pb-[calc(env(safe-area-inset-bottom)+10px)] pt-2.5">
+      <div className="mx-auto flex max-w-md gap-1 rounded-2xl bg-neutral-100 dark:bg-neutral-800 p-1">
+        {ITEMS.map((item) => {
+          const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`relative flex-1 rounded-xl py-2.5 text-center text-[13px] font-bold ${
+                active
+                  ? "bg-white dark:bg-neutral-700 text-blue-700 dark:text-blue-400 shadow-sm"
+                  : "text-neutral-500 dark:text-neutral-400"
+              }`}
+            >
+              {t(locale, item.labelKey)}
               {item.href === "/errors" && errorCount > 0 && (
-                <span className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold text-white">
-                  {errorCount > 99 ? "99+" : errorCount}
-                </span>
+                <span className="absolute right-3 top-1.5 h-1.5 w-1.5 rounded-full bg-red-600" />
               )}
-            </span>
-            {t(locale, item.labelKey)}
-          </Link>
-        );
-      })}
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }

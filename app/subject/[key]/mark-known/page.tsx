@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { getAppConfig } from "@/lib/config";
 import { getCurrentUser } from "@/lib/auth";
 import { getSubjectTopicsFlat } from "@/lib/curriculum";
 import { MarkKnownList } from "@/components/mark-known-list";
+import { BackPill } from "@/components/back-pill";
 import { t, type Locale } from "@/lib/i18n";
 
 export default async function MarkKnownPage({ params }: { params: Promise<{ key: string }> }) {
@@ -23,10 +23,8 @@ export default async function MarkKnownPage({ params }: { params: Promise<{ key:
 
   return (
     <main className="min-h-dvh px-6 py-8">
-      <Link href={`/subject/${subject.key}`} className="text-sm text-blue-600 dark:text-blue-400">
-        {t(locale, "backToSubject")}
-      </Link>
-      <h1 className="mt-2 mb-4 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "markKnownTitle")}</h1>
+      <BackPill href={`/subject/${subject.key}`} label={t(locale, "backToSubject")} />
+      <h1 className="mt-3 mb-4 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "markKnownTitle")}</h1>
       <MarkKnownList topics={subject.topics} locale={locale} />
     </main>
   );

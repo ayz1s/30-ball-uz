@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { QuizQuestion } from "@/lib/quiz";
 import { BottomNav } from "@/components/bottom-nav";
+import { BackPill } from "@/components/back-pill";
 import { t, type Locale } from "@/lib/i18n";
 import { now } from "@/lib/time";
 
@@ -50,9 +51,7 @@ export function QuizRunner({
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 pb-20 text-center">
         <p className="text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "quizEmpty")}</p>
-        <Link href={backHref} className="text-sm text-blue-600 dark:text-blue-400">
-          {t(locale, "backToTests")}
-        </Link>
+        <BackPill href={backHref} label={t(locale, "backToTests")} />
         <BottomNav locale={locale} />
       </main>
     );

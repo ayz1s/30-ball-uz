@@ -7,6 +7,8 @@ import { getRawInitData } from "@/lib/telegram-env";
 import { t, type Locale } from "@/lib/i18n";
 import { getAppConfigByKey } from "@/apps.config";
 import { BottomNav } from "@/components/bottom-nav";
+import { RingStat } from "@/components/ring-progress";
+import { SubjectIcon } from "@/components/subject-icon";
 
 interface HomeSubject {
   key: string;
@@ -89,45 +91,43 @@ export function HomeScreen() {
   const days = daysUntil(appConfig.examDate);
 
   return (
-    <main className="min-h-dvh px-6 py-8 pb-24">
-      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+    <main className="min-h-dvh px-5 py-6 pb-28">
+      <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
         {t(locale, "greeting", { name: data.firstName ?? "" })}
       </h1>
 
-      <div className="mt-4 flex gap-3 text-sm">
-        <div className="flex-1 rounded-xl bg-blue-50 dark:bg-blue-950 p-3 text-blue-900 dark:text-blue-200">
+      <div className="mt-4 flex items-center gap-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-4">
+        <RingStat value={data.home.doneTotal} total={data.home.totalTopics} size={52} />
+        <p className="flex-1 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           {t(locale, "topicsDoneOfTotal", {
             done: String(data.home.doneTotal),
             total: String(data.home.totalTopics),
           })}
-        </div>
-        <div className="flex-1 rounded-xl bg-neutral-50 dark:bg-neutral-900 p-3 text-neutral-700 dark:text-neutral-300">
+        </p>
+        <span className="shrink-0 rounded-xl bg-blue-50 dark:bg-blue-950 px-3 py-2 text-center text-[11px] font-bold leading-tight text-blue-700 dark:text-blue-400">
           {t(locale, "daysToExam", { days: String(days) })}
-        </div>
+        </span>
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
         {data.home.subjects.length === 0 && (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "homeEmptySubjects")}</p>
+          <p className="p-4 text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "homeEmptySubjects")}</p>
         )}
-        {data.home.subjects.map((subject) => {
+        {data.home.subjects.map((subject, i) => {
           const title = locale === "ru" ? subject.title : subject.titleUz;
-          const pct = subject.total > 0 ? Math.round((subject.done / subject.total) * 100) : 0;
           return (
             <Link
               key={subject.key}
               href={`/subject/${subject.key}`}
-              className="block rounded-xl border border-neutral-200 dark:border-neutral-700 p-4"
+              className={`flex items-center gap-3 px-4 py-3.5 ${
+                i > 0 ? "border-t border-neutral-100 dark:border-neutral-800" : ""
+              }`}
             >
-              <div className="flex items-baseline justify-between">
-                <span className="font-medium text-neutral-900 dark:text-neutral-100">{title}</span>
-                <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                  {subject.done}/{subject.total}
-                </span>
-              </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
-                <div className="h-full rounded-full bg-blue-600" style={{ width: `${pct}%` }} />
-              </div>
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
+                <SubjectIcon subjectKey={subject.key} />
+              </span>
+              <span className="flex-1 font-semibold text-neutral-900 dark:text-neutral-100">{title}</span>
+              <RingStat value={subject.done} total={subject.total} size={40} />
             </Link>
           );
         })}

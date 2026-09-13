@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getClassDetail, type TopicStatus } from "@/lib/curriculum";
 import { getOpenErrorCount } from "@/lib/quiz";
 import { BottomNav } from "@/components/bottom-nav";
+import { BackPill } from "@/components/back-pill";
 import { t, type Locale } from "@/lib/i18n";
 
 const STATUS_LABEL_KEY: Record<TopicStatus, "topicStatusNew" | "topicStatusOpened" | "topicStatusDone" | "topicStatusKnown"> = {
@@ -38,10 +39,8 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
 
   return (
     <main className="min-h-dvh px-6 py-8 pb-24">
-      <Link href={`/subject/${klass.subjectKey}`} className="text-sm text-blue-600 dark:text-blue-400">
-        {t(locale, "backToSubject")}
-      </Link>
-      <h1 className="mt-2 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{klass.title}</h1>
+      <BackPill href={`/subject/${klass.subjectKey}`} label={t(locale, "backToSubject")} />
+      <h1 className="mt-3 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{klass.title}</h1>
       <p className="text-sm text-neutral-500 dark:text-neutral-400">{klass.subjectTitle}</p>
 
       <div className="mt-6 space-y-5">
