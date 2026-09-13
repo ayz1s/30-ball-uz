@@ -53,14 +53,14 @@ export function MarkKnownList({ topics, locale }: { topics: MarkKnownTopic[]; lo
   }
 
   return (
-    <div className="space-y-2">
-      {topics.map((topic) => {
+    <div className="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+      {topics.map((topic, i) => {
         const known = knownIds.has(topic.id);
         return (
-          <div key={topic.id}>
-            <div className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-neutral-200 dark:border-neutral-700 px-4 py-3">
+          <div key={topic.id} className={i > 0 ? "border-t border-neutral-100 dark:border-neutral-800" : ""}>
+            <div className="flex min-h-14 items-center justify-between gap-3 px-4 py-3.5">
               <div>
-                <p className="text-neutral-900 dark:text-neutral-100">{topic.title}</p>
+                <p className="font-semibold text-neutral-900 dark:text-neutral-100">{topic.title}</p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400">
                   {topic.classTitle} · {topic.chapterTitle}
                 </p>
@@ -69,7 +69,7 @@ export function MarkKnownList({ topics, locale }: { topics: MarkKnownTopic[]; lo
                 type="button"
                 disabled={known || pendingIds.has(topic.id)}
                 onClick={() => markKnown(topic.id)}
-                className={`min-h-11 shrink-0 rounded-lg px-3 py-2 text-sm font-medium ${
+                className={`min-h-11 shrink-0 rounded-xl px-3 py-2 text-sm font-bold ${
                   known
                     ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300"
                     : "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400"
@@ -79,7 +79,7 @@ export function MarkKnownList({ topics, locale }: { topics: MarkKnownTopic[]; lo
               </button>
             </div>
             {failedId === topic.id && (
-              <p className="mt-1 px-1 text-xs text-red-700 dark:text-red-400">{t(locale, "saveError")}</p>
+              <p className="px-4 pb-3 text-xs text-red-700 dark:text-red-400">{t(locale, "saveError")}</p>
             )}
           </div>
         );

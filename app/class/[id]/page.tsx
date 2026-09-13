@@ -38,24 +38,26 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <main className="min-h-dvh px-6 py-8 pb-24">
+    <main className="min-h-dvh px-5 py-6 pb-28">
       <BackPill href={`/subject/${klass.subjectKey}`} label={t(locale, "backToSubject")} />
-      <h1 className="mt-3 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{klass.title}</h1>
+      <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">{klass.title}</h1>
       <p className="text-sm text-neutral-500 dark:text-neutral-400">{klass.subjectTitle}</p>
 
       <div className="mt-6 space-y-5">
         {klass.chapters.map((chapter) => (
           <div key={chapter.id}>
-            <h2 className="mb-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">{chapter.title}</h2>
-            <div className="space-y-2">
-              {chapter.topics.map((topic) => (
+            <h2 className="mb-2 text-sm font-semibold text-neutral-500 dark:text-neutral-400">{chapter.title}</h2>
+            <div className="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+              {chapter.topics.map((topic, i) => (
                 <Link
                   key={topic.slug}
                   href={`/topic/${topic.slug}`}
-                  className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-neutral-200 dark:border-neutral-700 px-4 py-3"
+                  className={`flex min-h-12 items-center justify-between gap-3 px-4 py-3.5 ${
+                    i > 0 ? "border-t border-neutral-100 dark:border-neutral-800" : ""
+                  }`}
                 >
-                  <span className="text-neutral-900 dark:text-neutral-100">{topic.title}</span>
-                  <span className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400">
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-100">{topic.title}</span>
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400">
                     <span className={`h-2 w-2 rounded-full ${STATUS_DOT[topic.status]}`} />
                     {t(locale, STATUS_LABEL_KEY[topic.status])}
                   </span>

@@ -17,20 +17,22 @@ export default async function ReviewPage() {
   ]);
 
   return (
-    <main className="min-h-dvh px-6 py-8 pb-24">
-      <h1 className="mb-4 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "navReview")}</h1>
+    <main className="min-h-dvh px-5 py-6 pb-28">
+      <h1 className="mb-4 text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">{t(locale, "navReview")}</h1>
 
       {items.length === 0 ? (
         <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "reviewEmpty")}</p>
       ) : (
-        <div className="space-y-2">
-          {items.map((item) => (
+        <div className="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+          {items.map((item, i) => (
             <Link
               key={item.slug}
               href={`/topic/${item.slug}`}
-              className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-neutral-200 dark:border-neutral-700 px-4 py-3"
+              className={`flex min-h-12 items-center justify-between gap-3 px-4 py-3.5 ${
+                i > 0 ? "border-t border-neutral-100 dark:border-neutral-800" : ""
+              }`}
             >
-              <span className="text-neutral-900 dark:text-neutral-100">{item.title}</span>
+              <span className="font-semibold text-neutral-900 dark:text-neutral-100">{item.title}</span>
               <span className="text-xs text-neutral-500 dark:text-neutral-400">
                 {t(locale, "reviewDaysAgo", { days: String(daysAgo(item.at)) })}
               </span>

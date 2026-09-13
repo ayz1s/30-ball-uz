@@ -38,7 +38,7 @@ export function TopicQuestion({
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-4">
       <p className="font-medium text-neutral-900 dark:text-neutral-100">{question.text}</p>
       <div className="grid gap-2">
         {question.options.map((option, i) => (
@@ -47,7 +47,7 @@ export function TopicQuestion({
             type="button"
             disabled={pickedIdx !== null}
             onClick={() => pick(i)}
-            className={`min-h-12 rounded-lg px-4 py-3 text-left text-sm font-medium ${
+            className={`min-h-12 rounded-xl px-4 py-3 text-left text-sm font-medium ${
               pickedIdx === i
                 ? i === question.correctIdx
                   ? "bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-200"

@@ -108,7 +108,7 @@ export function TopicScreen({
           type="button"
           onClick={markDone}
           disabled={done}
-          className={`min-h-12 w-full rounded-xl text-sm font-medium ${
+          className={`min-h-12 w-full rounded-2xl text-sm font-bold ${
             done ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
           }`}
         >
@@ -126,7 +126,7 @@ export function TopicScreen({
         {nextTopic ? (
           <Link
             href={`/topic/${nextTopic.slug}`}
-            className="block min-h-12 w-full rounded-xl bg-blue-600 py-3 text-center text-sm font-medium text-white"
+            className="block min-h-12 w-full rounded-2xl bg-blue-600 py-3 text-center text-sm font-bold text-white"
           >
             {t(locale, "nextTopicButton", { title: nextTopic.title })}
           </Link>

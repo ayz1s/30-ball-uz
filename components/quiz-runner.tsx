@@ -61,8 +61,8 @@ export function QuizRunner({
     const correctCount = results.filter((r) => r.correct).length;
     const mistakes = results.filter((r) => !r.correct);
     return (
-      <main className="min-h-dvh px-6 py-8 pb-24">
-        <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "quizFinishedTitle")}</h1>
+      <main className="min-h-dvh px-5 py-6 pb-28">
+        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">{t(locale, "quizFinishedTitle")}</h1>
         <p className="mt-2 text-neutral-700 dark:text-neutral-300">
           {t(locale, "quizScore", { correct: String(correctCount), total: String(results.length) })}
         </p>
@@ -70,7 +70,7 @@ export function QuizRunner({
         {mistakes.length > 0 && (
           <div className="mt-4 space-y-2">
             {mistakes.map((r) => (
-              <div key={r.question.id} className="rounded-xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-950 p-3 text-sm">
+              <div key={r.question.id} className="rounded-2xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-950 p-3 text-sm">
                 <p className="font-medium text-red-900 dark:text-red-200">{r.question.text}</p>
                 <p className="mt-1 text-red-800 dark:text-red-300">{r.question.explanation}</p>
               </div>
@@ -80,7 +80,7 @@ export function QuizRunner({
 
         <Link
           href={backHref}
-          className="mt-6 block rounded-xl bg-blue-600 py-3 text-center text-sm font-medium text-white"
+          className="mt-6 block rounded-2xl bg-blue-600 py-3 text-center text-sm font-bold text-white"
         >
           {t(locale, "backToTests")}
         </Link>
@@ -111,11 +111,11 @@ export function QuizRunner({
   }
 
   return (
-    <main className="min-h-dvh px-6 py-8 pb-24">
-      <p className="text-sm text-neutral-500 dark:text-neutral-400">
+    <main className="min-h-dvh px-5 py-6 pb-28">
+      <p className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">
         {title} · {index + 1}/{questions.length}
       </p>
-      <div className="mt-4 space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+      <div className="mt-4 space-y-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-4">
         <p className="font-medium text-neutral-900 dark:text-neutral-100">{question.text}</p>
         <div className="grid gap-2">
           {question.options.map((option, i) => (
@@ -124,7 +124,7 @@ export function QuizRunner({
               type="button"
               disabled={pickedIdx !== null}
               onClick={() => pick(i)}
-              className={`min-h-12 rounded-lg px-4 py-3 text-left text-sm font-medium ${
+              className={`min-h-12 rounded-xl px-4 py-3 text-left text-sm font-medium ${
                 pickedIdx === i
                   ? i === question.correctIdx
                     ? "bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-200"
@@ -145,7 +145,7 @@ export function QuizRunner({
         <button
           type="button"
           onClick={next}
-          className="mt-4 w-full rounded-xl bg-blue-600 py-3 text-sm font-medium text-white"
+          className="mt-4 w-full rounded-2xl bg-blue-600 py-3 text-sm font-bold text-white"
         >
           {index + 1 < questions.length ? t(locale, "nextQuestion") : t(locale, "finishQuiz")}
         </button>

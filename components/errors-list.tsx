@@ -28,12 +28,14 @@ export function ErrorsList({
 
   return (
     <div>
-      <div className="mb-4 flex gap-2">
+      <div className="mb-4 flex gap-1 rounded-2xl bg-neutral-100 dark:bg-neutral-800 p-1">
         <button
           type="button"
           onClick={() => setTab("open")}
-          className={`min-h-11 flex-1 rounded-lg text-sm font-medium ${
-            tab === "open" ? "bg-blue-600 text-white" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+          className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${
+            tab === "open"
+              ? "bg-white dark:bg-neutral-700 text-blue-700 dark:text-blue-400 shadow-sm"
+              : "text-neutral-500 dark:text-neutral-400"
           }`}
         >
           {t(locale, "errorsOpen", { count: String(openItems.length) })}
@@ -41,8 +43,10 @@ export function ErrorsList({
         <button
           type="button"
           onClick={() => setTab("fixed")}
-          className={`min-h-11 flex-1 rounded-lg text-sm font-medium ${
-            tab === "fixed" ? "bg-blue-600 text-white" : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+          className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${
+            tab === "fixed"
+              ? "bg-white dark:bg-neutral-700 text-blue-700 dark:text-blue-400 shadow-sm"
+              : "text-neutral-500 dark:text-neutral-400"
           }`}
         >
           {t(locale, "errorsFixed", { count: String(fixedItems.length) })}
