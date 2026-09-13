@@ -28,9 +28,12 @@ export async function createSessionForTelegramUser(tgUser: TelegramUser) {
 
   const user = await db.user.upsert({
     where: { appKey_telegramId: { appKey, telegramId: BigInt(tgUser.id) } },
+    // languageCode здесь не трогаем: язык Telegram — это только стартовое
+    // значение при первом входе (см. create ниже). Если пользователь потом
+    // вручную переключил язык в приложении, повторный вход не должен
+    // затирать его выбор обратно на язык Telegram.
     update: {
       firstName: tgUser.first_name,
-      languageCode: tgUser.language_code ?? "uz",
       lastSeenAt: new Date(),
     },
     create: {

@@ -7,11 +7,9 @@ import { t, type Locale } from "@/lib/i18n";
 
 export default async function TestsPage() {
   const { key: appKey } = getAppConfig();
-  const user = await getCurrentUser();
+  const [user, subjects] = await Promise.all([getCurrentUser(), getTestsOverview(appKey)]);
   const locale: Locale = user?.languageCode === "ru" ? "ru" : "uz";
   const errorCount = user ? await getOpenErrorCount(user.id) : 0;
-
-  const subjects = await getTestsOverview(appKey);
   const totalQuestions = subjects.reduce((sum, subject) => sum + subject.questionCount, 0);
 
   return (

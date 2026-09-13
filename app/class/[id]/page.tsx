@@ -24,9 +24,10 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
   const { id } = await params;
   const user = await getCurrentUser();
   const locale: Locale = user?.languageCode === "ru" ? "ru" : "uz";
-  const errorCount = user ? await getOpenErrorCount(user.id) : 0;
-
-  const klass = await getClassDetail(id, user?.id ?? null);
+  const [errorCount, klass] = await Promise.all([
+    user ? getOpenErrorCount(user.id) : Promise.resolve(0),
+    getClassDetail(id, user?.id ?? null),
+  ]);
 
   if (!klass) {
     return (

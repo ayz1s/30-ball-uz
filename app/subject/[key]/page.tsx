@@ -13,9 +13,10 @@ export default async function SubjectPage({ params }: { params: Promise<{ key: s
   const { key: appKey } = getAppConfig();
   const user = await getCurrentUser();
   const locale: Locale = user?.languageCode === "ru" ? "ru" : "uz";
-  const errorCount = user ? await getOpenErrorCount(user.id) : 0;
-
-  const subject = await getSubjectDetail(appKey, key, user?.id ?? null);
+  const [errorCount, subject] = await Promise.all([
+    user ? getOpenErrorCount(user.id) : Promise.resolve(0),
+    getSubjectDetail(appKey, key, user?.id ?? null),
+  ]);
 
   if (!subject) {
     return (

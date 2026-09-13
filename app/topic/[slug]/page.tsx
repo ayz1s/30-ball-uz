@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { db } from "@/lib/db";
 import { getAppConfig } from "@/lib/config";
 import { getCurrentUser } from "@/lib/auth";
@@ -32,24 +33,34 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     );
   }
 
-  let initialDone = false;
+  // Запись "тема открыта" и аналитика — фоновая работа, которая не должна
+  // задерживать отдачу страницы. after() досчитывает её уже после ответа,
+  // но до того, как Vercel остановит функцию (обычный await здесь заставлял
+  // экран темы ждать лишний круг до базы на каждое открытие).
   if (user) {
-    await Promise.all([
-      recordTopicOpened(user.id, topic.id),
-      logEvent(appKey, user.id, "topic_opened", { topicId: topic.id, slug: topic.slug }),
-    ]);
-    const progress = await db.progress.findUnique({
-      where: { userId_topicId: { userId: user.id, topicId: topic.id } },
-      select: { status: true },
-    });
-    initialDone = progress?.status === "done" || progress?.status === "known";
+    after(() =>
+      Promise.all([
+        recordTopicOpened(user.id, topic.id).catch(() => {}),
+        logEvent(appKey, user.id, "topic_opened", { topicId: topic.id, slug: topic.slug }),
+      ]),
+    );
   }
 
-  const nextSlug = await getNextTopicSlug(appKey, topic.id);
-  const [nextTopic, errorCount] = await Promise.all([
-    nextSlug ? db.topic.findUnique({ where: { slug: nextSlug }, select: { slug: true, title: true } }) : null,
-    user ? getOpenErrorCount(user.id) : 0,
+  const [nextSlug, progress, errorCount] = await Promise.all([
+    getNextTopicSlug(appKey, topic.id),
+    user
+      ? db.progress.findUnique({
+          where: { userId_topicId: { userId: user.id, topicId: topic.id } },
+          select: { status: true },
+        })
+      : Promise.resolve(null),
+    user ? getOpenErrorCount(user.id) : Promise.resolve(0),
   ]);
+  const initialDone = progress?.status === "done" || progress?.status === "known";
+
+  const nextTopic = nextSlug
+    ? await db.topic.findUnique({ where: { slug: nextSlug }, select: { slug: true, title: true } })
+    : null;
 
   const questions: TopicQuestionData[] = topic.questions.map((question) => ({
     id: question.id,

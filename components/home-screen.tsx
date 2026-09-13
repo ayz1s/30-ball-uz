@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getRawInitData } from "@/lib/telegram-env";
 import { t, type Locale } from "@/lib/i18n";
 import { getAppConfigByKey } from "@/apps.config";
 import { BottomNav } from "@/components/bottom-nav";
 import { RingStat } from "@/components/ring-progress";
 import { SubjectIcon } from "@/components/subject-icon";
+import { LocaleSwitch } from "@/components/locale-switch";
 
 interface HomeSubject {
   key: string;
@@ -67,15 +68,29 @@ function daysUntil(dateIso: string): number {
 
 export function HomeScreen() {
   const rawInitData = useRawInitData();
+  const queryClient = useQueryClient();
+  const queryKey = ["auth", rawInitData];
 
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["auth", rawInitData],
+    queryKey,
     queryFn: () => fetchAuth(rawInitData!),
     enabled: Boolean(rawInitData),
     retry: 1,
   });
 
   const locale: Locale = data?.languageCode === "ru" ? "ru" : "uz";
+
+  function changeLocale(next: Locale) {
+    if (next === locale) return;
+    queryClient.setQueryData<AuthResponse>(queryKey, (prev) => (prev ? { ...prev, languageCode: next } : prev));
+    fetch("/api/locale", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locale: next }),
+    }).catch(() => {
+      queryClient.setQueryData<AuthResponse>(queryKey, (prev) => (prev ? { ...prev, languageCode: locale } : prev));
+    });
+  }
 
   if (!rawInitData || isLoading) {
     return <ScreenState text={t(locale, "loading")} />;
@@ -92,9 +107,12 @@ export function HomeScreen() {
 
   return (
     <main className="min-h-dvh px-5 py-6 pb-28">
-      <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
-        {t(locale, "greeting", { name: data.firstName ?? "" })}
-      </h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
+          {t(locale, "greeting", { name: data.firstName ?? "" })}
+        </h1>
+        <LocaleSwitch locale={locale} onChange={changeLocale} />
+      </div>
 
       <div className="mt-4 flex items-center gap-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-4">
         <RingStat value={data.home.doneTotal} total={data.home.totalTopics} size={52} />
