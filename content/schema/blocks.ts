@@ -50,6 +50,9 @@ export const linkedFormulaBlockSchema = z.object({
 
 export const stepsBlockSchema = z.object({
   type: z.literal("steps"),
+  // Формулировка условия задачи — рендерится отдельным тёмным блоком над
+  // шагами, чтобы не выглядеть очередным шагом в том же списке.
+  condition: z.string().min(1).optional(),
   steps: z
     .array(z.object({ text: z.string().min(1), explanation: z.string().min(1) }))
     .min(1),
