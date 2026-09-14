@@ -22,13 +22,17 @@ export function FlashcardsBlock({ block, locale }: { block: FlashcardsBlockData;
       <button
         type="button"
         onClick={() => setFlipped((f) => !f)}
-        className="min-h-32 w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-5 text-left shadow-sm"
+        className={`min-h-32 w-full rounded-xl p-5 text-left ${
+          flipped ? "bg-green-50 dark:bg-green-950" : "bg-blue-50 dark:bg-blue-950"
+        }`}
       >
-        <p className="text-xs text-neutral-400 dark:text-neutral-500">
+        <p className={`text-xs ${flipped ? "text-green-600 dark:text-green-400" : "text-blue-600 dark:text-blue-400"}`}>
           {flipped ? t(locale, "blockFlashcardAnswer") : t(locale, "blockFlashcardQuestion")} · {index + 1}/
           {block.cards.length}
         </p>
-        <p className="mt-2 text-lg text-neutral-900 dark:text-neutral-100">{flipped ? card.answer : card.question}</p>
+        <p className={`mt-2 text-lg ${flipped ? "text-green-900 dark:text-green-100" : "text-blue-900 dark:text-blue-100"}`}>
+          {flipped ? card.answer : card.question}
+        </p>
       </button>
       <div className="flex gap-2">
         <button
