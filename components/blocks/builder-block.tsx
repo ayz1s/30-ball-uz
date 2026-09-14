@@ -44,7 +44,7 @@ export function BuilderBlock({ block, locale }: { block: BuilderBlockData; local
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <p className="text-center text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
         {pickedParts.join("") || "…"}
       </p>

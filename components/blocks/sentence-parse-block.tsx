@@ -16,7 +16,7 @@ export function SentenceParseBlock({ block }: { block: SentenceParseBlockData; l
   const roles = [...new Set(block.parts.map((p) => p.role))];
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <p className="flex flex-wrap gap-1 text-lg">
         {block.parts.map((part, i) => (
           <span key={i} className={`rounded px-1 ${ROLE_COLORS[roles.indexOf(part.role) % ROLE_COLORS.length]}`}>

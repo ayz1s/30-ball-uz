@@ -23,7 +23,7 @@ export function MorphemesBlock({ block }: { block: MorphemesBlockData; locale: L
   const kinds = [...new Set(block.parts.map((p) => p.kind))];
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <div className="flex flex-wrap gap-1 text-2xl font-semibold">
         {block.parts.map((part, i) => (
           <button

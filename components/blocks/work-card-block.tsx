@@ -6,7 +6,7 @@ type WorkCardBlockData = z.infer<typeof workCardBlockSchema>;
 
 export function WorkCardBlock({ block, locale }: { block: WorkCardBlockData; locale: Locale }) {
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{block.title}</p>
       <dl className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
         <div>

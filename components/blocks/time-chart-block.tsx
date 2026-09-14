@@ -12,7 +12,7 @@ export function TimeChartBlock({ block, locale }: { block: TimeChartBlockData; l
   const span = block.endYear - block.startYear || 1;
 
   return (
-    <div className="space-y-4 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-4">
       <div className="space-y-2">
         {block.lanes.map((lane, li) => (
           <div key={li} className="space-y-1">

@@ -17,7 +17,7 @@ const SLOT_KEYS: Array<{
 
 export function EntityCardBlock({ block, locale }: { block: EntityCardBlockData; locale: Locale }) {
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <p className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{block.name}</p>
       <dl className="space-y-2 text-sm">
         {SLOT_KEYS.filter((slot) => block[slot.key]).map((slot) => (

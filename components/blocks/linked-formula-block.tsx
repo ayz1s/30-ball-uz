@@ -11,7 +11,7 @@ export function LinkedFormulaBlock({ block }: { block: LinkedFormulaBlockData; l
   const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <div className="space-y-4 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-4">
       <p className="text-neutral-800 dark:text-neutral-200">{block.problem}</p>
       <div className="flex flex-wrap gap-2">
         {block.links.map((link) => (

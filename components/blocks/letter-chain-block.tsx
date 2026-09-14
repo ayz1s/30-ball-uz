@@ -11,7 +11,7 @@ export function LetterChainBlock({ block }: { block: LetterChainBlockData; local
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       <p className="font-medium text-neutral-900 dark:text-neutral-100">{block.title}</p>
       <div className="flex flex-wrap gap-2">
         {block.letters.map((item, i) => (

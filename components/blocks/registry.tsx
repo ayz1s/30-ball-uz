@@ -73,6 +73,10 @@ const BLOCK_KICKER: Partial<Record<BlockType, DictKey>> = {
 // Блоки хранятся в базе как обычный Json, поэтому диспетчеризация идёт по
 // строке type в рантайме, а не через строгую zod-схему (та валидирует
 // только на импорте контента) — неизвестный тип не должен ронять страницу.
+//
+// Каждый блок — отдельная белая карточка с рамкой (как у TopicQuestion),
+// а не просто подпись сверху: подписи было недостаточно, соседние блоки
+// на "Схеме" всё равно визуально сливались друг с другом.
 export function BlockRenderer({ block, locale }: { block: RawBlock; locale: Locale }) {
   const Component = registry[block.type as BlockType];
   if (!Component) {
@@ -81,11 +85,14 @@ export function BlockRenderer({ block, locale }: { block: RawBlock; locale: Loca
   }
   const kickerKey = BLOCK_KICKER[block.type as BlockType];
   return (
-    <div>
+    <div className="rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-4 shadow-sm">
       {kickerKey && (
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400 dark:text-neutral-500">
-          {t(locale, kickerKey)}
-        </p>
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-4 w-1 rounded-full bg-blue-600" />
+          <p className="text-sm font-bold uppercase tracking-wide text-neutral-700 dark:text-neutral-200">
+            {t(locale, kickerKey)}
+          </p>
+        </div>
       )}
       <Component block={block} locale={locale} />
     </div>

@@ -35,7 +35,7 @@ export function DecisionTreeBlock({ block, locale }: { block: DecisionTreeBlockD
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
+    <div className="space-y-3">
       {leaf ? (
         <div className="space-y-2">
           <p className="font-medium text-neutral-900 dark:text-neutral-100">{leaf.method}</p>
