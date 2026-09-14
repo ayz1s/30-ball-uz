@@ -93,13 +93,21 @@ export function TopicScreen({
         ))}
       </nav>
 
-      <div className="space-y-4 px-4 py-4">
+      <div className="space-y-6 px-4 py-4">
         {tab === "questions"
           ? questions.length > 0
-            ? questions.map((q) => <TopicQuestion key={q.id} question={q} locale={locale} />)
+            ? questions.map((q, i) => (
+                <div key={q.id} className={i > 0 ? "border-t border-neutral-100 dark:border-neutral-800 pt-6" : ""}>
+                  <TopicQuestion question={q} locale={locale} />
+                </div>
+              ))
             : <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "tabEmpty")}</p>
           : blocksByTab[tab].length > 0
-            ? blocksByTab[tab].map((block, i) => <BlockRenderer key={i} block={block} locale={locale} />)
+            ? blocksByTab[tab].map((block, i) => (
+                <div key={i} className={i > 0 ? "border-t border-neutral-100 dark:border-neutral-800 pt-6" : ""}>
+                  <BlockRenderer block={block} locale={locale} />
+                </div>
+              ))
             : <p className="px-2 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "tabEmpty")}</p>}
       </div>
 

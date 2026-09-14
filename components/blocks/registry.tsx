@@ -19,7 +19,7 @@ import { BuilderBlock } from "./builder-block";
 import { WorkCardBlock } from "./work-card-block";
 import { UnknownBlock } from "./unknown-block";
 import type { BlockType } from "@/content/schema/blocks";
-import type { Locale } from "@/lib/i18n";
+import { t, type DictKey, type Locale } from "@/lib/i18n";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const registry: Record<BlockType, ComponentType<{ block: any; locale: Locale }>> = {
@@ -48,6 +48,28 @@ export interface RawBlock {
   [key: string]: unknown;
 }
 
+// Подпись над блоком, чтобы соседние блоки разных типов на одной вкладке
+// (например steps + decisionTree на "Схеме") не сливались в один список.
+// text/flashcards/image не нуждаются в подписи — они и так самодостаточны
+// (сплошной текст, своя карточка с прогрессом, подпись под картинкой).
+const BLOCK_KICKER: Partial<Record<BlockType, DictKey>> = {
+  rule: "blockKickerRule",
+  linkedFormula: "blockKickerLinkedFormula",
+  steps: "blockKickerSteps",
+  decisionTree: "blockKickerDecisionTree",
+  firstStep: "blockKickerFirstStep",
+  timeline: "blockKickerTimeline",
+  entityCard: "blockKickerEntityCard",
+  letterChain: "blockKickerLetterChain",
+  timeChart: "blockKickerTimeChart",
+  causeEffect: "blockKickerCauseEffect",
+  morphemes: "blockKickerMorphemes",
+  contrast: "blockKickerContrast",
+  sentenceParse: "blockKickerSentenceParse",
+  builder: "blockKickerBuilder",
+  workCard: "blockKickerWorkCard",
+};
+
 // Блоки хранятся в базе как обычный Json, поэтому диспетчеризация идёт по
 // строке type в рантайме, а не через строгую zod-схему (та валидирует
 // только на импорте контента) — неизвестный тип не должен ронять страницу.
@@ -57,5 +79,15 @@ export function BlockRenderer({ block, locale }: { block: RawBlock; locale: Loca
     console.warn(`Неизвестный тип блока в контенте: "${block.type}"`);
     return <UnknownBlock type={block.type} locale={locale} />;
   }
-  return <Component block={block} locale={locale} />;
+  const kickerKey = BLOCK_KICKER[block.type as BlockType];
+  return (
+    <div>
+      {kickerKey && (
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-400 dark:text-neutral-500">
+          {t(locale, kickerKey)}
+        </p>
+      )}
+      <Component block={block} locale={locale} />
+    </div>
+  );
 }

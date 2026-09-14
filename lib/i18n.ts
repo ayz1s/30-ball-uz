@@ -82,6 +82,21 @@ const dictionaries = {
     blockBuilderWrongPart: "«{part}» здесь не подходит.",
     retryButton: "Повторить",
     saveError: "Не удалось сохранить. Проверьте связь и попробуйте снова.",
+    blockKickerRule: "Правило",
+    blockKickerLinkedFormula: "Формула",
+    blockKickerSteps: "Разбор по шагам",
+    blockKickerDecisionTree: "Как выбрать способ",
+    blockKickerFirstStep: "Реши по шагам",
+    blockKickerTimeline: "Лента событий",
+    blockKickerEntityCard: "Карточка",
+    blockKickerLetterChain: "Мнемоника",
+    blockKickerTimeChart: "Шкала времени",
+    blockKickerCauseEffect: "Причина → следствие",
+    blockKickerMorphemes: "Разбор слова",
+    blockKickerContrast: "Сравнение",
+    blockKickerSentenceParse: "Разбор предложения",
+    blockKickerBuilder: "Собери слово",
+    blockKickerWorkCard: "О произведении",
   },
   uz: {
     loading: "Yuklanmoqda…",
@@ -164,10 +179,25 @@ const dictionaries = {
     blockBuilderWrongPart: "«{part}» bu yerga to‘g‘ri kelmaydi.",
     retryButton: "Qayta urinish",
     saveError: "Saqlab bo‘lmadi. Aloqani tekshirib, qayta urinib ko‘ring.",
+    blockKickerRule: "Qoida",
+    blockKickerLinkedFormula: "Formula",
+    blockKickerSteps: "Qadamlar bo‘yicha yechim",
+    blockKickerDecisionTree: "Usulni qanday tanlash",
+    blockKickerFirstStep: "Qadamlar bilan yech",
+    blockKickerTimeline: "Voqealar tasmasi",
+    blockKickerEntityCard: "Kartochka",
+    blockKickerLetterChain: "Yodlash usuli",
+    blockKickerTimeChart: "Vaqt chizig‘i",
+    blockKickerCauseEffect: "Sabab → natija",
+    blockKickerMorphemes: "So‘z tahlili",
+    blockKickerContrast: "Taqqoslash",
+    blockKickerSentenceParse: "Gap tahlili",
+    blockKickerBuilder: "So‘zni yig‘",
+    blockKickerWorkCard: "Asar haqida",
   },
 } satisfies Record<Locale, Record<string, string>>;
 
-type DictKey = keyof (typeof dictionaries)["ru"];
+export type DictKey = keyof (typeof dictionaries)["ru"];
 
 export function t(locale: Locale, key: DictKey, vars?: Record<string, string>): string {
   let str = dictionaries[locale]?.[key] ?? dictionaries.ru[key];
