@@ -61,20 +61,44 @@ export async function importSeedFile(data: SeedFile) {
     },
   });
 
-  // Вопросы у темы пока без стабильного ключа кроме порядка — на этапе
-  // тестового контента просто пересобираем набор при каждом импорте.
-  await db.question.deleteMany({ where: { topicId: topic.id } });
-  if (data.topic.questions.length > 0) {
-    await db.question.createMany({
-      data: data.topic.questions.map((q) => ({
-        topicId: topic.id,
-        text: q.text,
-        options: q.options,
-        correctIdx: q.correctIdx,
-        explanation: q.explanation,
-        order: q.order,
-      })),
-    });
+  // Вопросы сопоставляем по order внутри темы — это стабильный ключ из JSON.
+  // Обновляем существующие на месте (а не удаляем+создаём), потому что
+  // на реальных пользователях уже есть Attempt/ErrorItem, ссылающиеся на
+  // текущий id вопроса, и удаление такого вопроса упадёт на внешнем ключе.
+  const existing = await db.question.findMany({ where: { topicId: topic.id } });
+  const existingByOrder = new Map(existing.map((q) => [q.order, q]));
+  const newOrders = new Set(data.topic.questions.map((q) => q.order));
+
+  for (const q of data.topic.questions) {
+    const found = existingByOrder.get(q.order);
+    if (found) {
+      await db.question.update({
+        where: { id: found.id },
+        data: { text: q.text, options: q.options, correctIdx: q.correctIdx, explanation: q.explanation },
+      });
+    } else {
+      await db.question.create({
+        data: {
+          topicId: topic.id,
+          text: q.text,
+          options: q.options,
+          correctIdx: q.correctIdx,
+          explanation: q.explanation,
+          order: q.order,
+        },
+      });
+    }
+  }
+
+  for (const old of existing) {
+    if (newOrders.has(old.order)) continue;
+    try {
+      await db.question.delete({ where: { id: old.id } });
+    } catch (error) {
+      console.warn(
+        `  ! не удалось удалить вопрос order=${old.order} темы ${data.topic.slug} (скорее всего, есть ответы пользователей) — оставлен как есть`,
+      );
+    }
   }
 
   return { subject: subject.key, topic: topic.slug, questions: data.topic.questions.length };

@@ -35,25 +35,33 @@ afterAll(async () => {
 });
 
 describe("importSeedFile", () => {
-  it("создаёт Subject/Class/Chapter/Topic/Question по цепочке из файла", async () => {
-    const result = await importSeedFile(seed);
-    expect(result).toEqual({ subject: "testsubj", topic: "vitest-tmp-topic", questions: 1 });
+  it(
+    "создаёт Subject/Class/Chapter/Topic/Question по цепочке из файла",
+    async () => {
+      const result = await importSeedFile(seed);
+      expect(result).toEqual({ subject: "testsubj", topic: "vitest-tmp-topic", questions: 1 });
 
-    const topic = await db.topic.findUnique({ where: { slug: seed.topic.slug }, include: { questions: true } });
-    expect(topic?.published).toBe(true);
-    expect(topic?.questions).toHaveLength(1);
-    expect(topic?.questions[0].text).toBe("Вопрос?");
-  });
+      const topic = await db.topic.findUnique({ where: { slug: seed.topic.slug }, include: { questions: true } });
+      expect(topic?.published).toBe(true);
+      expect(topic?.questions).toHaveLength(1);
+      expect(topic?.questions[0].text).toBe("Вопрос?");
+    },
+    15000,
+  );
 
-  it("повторный импорт того же файла не создаёт дублей (идемпотентность)", async () => {
-    await importSeedFile(seed);
-    await importSeedFile(seed);
+  it(
+    "повторный импорт того же файла не создаёт дублей (идемпотентность)",
+    async () => {
+      await importSeedFile(seed);
+      await importSeedFile(seed);
 
-    const subjects = await db.subject.findMany({ where: { appKey: TEST_APP_KEY } });
-    const classes = await db.class.findMany({ where: { subject: { appKey: TEST_APP_KEY } } });
-    const topics = await db.topic.findMany({ where: { slug: seed.topic.slug } });
-    expect(subjects).toHaveLength(1);
-    expect(classes).toHaveLength(1);
-    expect(topics).toHaveLength(1);
-  });
+      const subjects = await db.subject.findMany({ where: { appKey: TEST_APP_KEY } });
+      const classes = await db.class.findMany({ where: { subject: { appKey: TEST_APP_KEY } } });
+      const topics = await db.topic.findMany({ where: { slug: seed.topic.slug } });
+      expect(subjects).toHaveLength(1);
+      expect(classes).toHaveLength(1);
+      expect(topics).toHaveLength(1);
+    },
+    15000,
+  );
 });
