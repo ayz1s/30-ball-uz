@@ -43,3 +43,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# claude code local settings (personal, not shared)
+.claude/settings.local.json
