@@ -111,8 +111,19 @@ async function main() {
     process.exit(1);
   }
 
-  const data = (await response.json()) as { choices: Array<{ message: { content: string } }> };
+  const data = (await response.json()) as {
+    choices: Array<{ message: { content: string } }>;
+    usage?: { prompt_tokens: number; completion_tokens: number; total_tokens: number };
+  };
   const raw = data.choices[0].message.content.trim();
+  if (data.usage) {
+    const inputCost = (data.usage.prompt_tokens / 1_000_000) * 0.516;
+    const outputCost = (data.usage.completion_tokens / 1_000_000) * 2.87;
+    console.log(
+      `Токены: ${data.usage.prompt_tokens} вход + ${data.usage.completion_tokens} выход = ${data.usage.total_tokens}. ` +
+        `Цена: $${inputCost.toFixed(4)} + $${outputCost.toFixed(4)} = $${(inputCost + outputCost).toFixed(4)}`,
+    );
+  }
 
   const cleaned = raw
     .replace(/^```(json)?/i, "")
