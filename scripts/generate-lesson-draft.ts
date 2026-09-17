@@ -33,6 +33,17 @@ const chapterTitle = arg("chapter");
 const chapterOrder = Number(arg("chapterOrder"));
 const topicTitle = arg("title");
 const topicOrder = Number(arg("topicOrder"));
+
+// Классы сортируются в приложении по этому полю (lib/curriculum.ts). "5 класс" уже
+// импортирован в прод с order: 0 — нельзя менять. Каждый следующий класс получает
+// свой порядковый номер по номеру класса, иначе "5 класс" и "6 класс" получат
+// одинаковый order и будут сортироваться непредсказуемо (это уже ломало "Дальше" раньше).
+const gradeNumberMatch = grade.match(/\d+/);
+if (!gradeNumberMatch) {
+  console.error(`Не удалось определить номер класса из "${grade}"`);
+  process.exit(1);
+}
+const classOrder = Number(gradeNumberMatch[0]) - 5;
 const outPath = arg("out");
 
 const PROMPT = `Ты — автор учебного контента для Telegram-приложения по подготовке к вступительному экзамену в Узбекистане («30 ball.uz»). Аудитория — школьники 15–18 лет, которые претендуют на сильный результат, поэтому им не интересны голые определения — им нужна конкретная техника решения задач.
@@ -143,7 +154,7 @@ async function main() {
   const seedFile = {
     appKey: "ball30uz",
     subject: { key: "math", title: "Математика", titleUz: "Matematika", order: 0 },
-    class: { title: grade, order: 0 },
+    class: { title: grade, order: classOrder },
     chapter: { title: chapterTitle, order: chapterOrder },
     topic: {
       slug,
