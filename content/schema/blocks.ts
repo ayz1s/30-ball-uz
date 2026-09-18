@@ -311,10 +311,15 @@ export type BlockType = Block["type"];
 export const BLOCK_TAB: Record<BlockType, "theory" | "scheme" | "cards"> = {
   text: "theory",
   rule: "theory",
+  // geoFigure — исключение среди "визуальных" блоков: это не отдельная
+  // интерактивная практика (как decisionTree/steps), а сам чертёж фигуры,
+  // без которого текст теории неполон. Он должен читаться на вкладке
+  // "Теория" сразу там, где по нему в тексте идёт речь, а не быть
+  // спрятанным на отдельной вкладке "Схема" вперемешку с разбором задач.
+  geoFigure: "theory",
   flashcards: "cards",
   image: "scheme",
   linkedFormula: "scheme",
-  geoFigure: "scheme",
   steps: "scheme",
   decisionTree: "scheme",
   firstStep: "scheme",
