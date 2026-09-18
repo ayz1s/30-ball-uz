@@ -87,6 +87,29 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Секущая c пересекает прямые a и b: ∠2 = 55°, ∠5 = 125°. Тогда ∠4 = ∠2 = 55° (вертикальные), ∠6 = 180° − ∠5 = 55° (смежные) — накрест лежащие ∠4 и ∠6 равны, значит a‖b.",
+        "points": [
+          { "id": "AL", "x": -60, "y": 40, "label": "a", "labelDx": -6, "labelDy": -8 },
+          { "id": "AR", "x": 60, "y": 40 },
+          { "id": "BL", "x": -90, "y": 0, "label": "b", "labelDx": -6, "labelDy": 14 },
+          { "id": "BR", "x": 30, "y": 0 },
+          { "id": "CT", "x": 17.2073, "y": 64.5746, "label": "c", "labelDx": 8, "labelDy": -6 },
+          { "id": "CB", "x": -42.3527, "y": -20.4735 },
+          { "id": "K", "x": 0, "y": 40, "label": "K", "labelDx": 8, "labelDy": -10 },
+          { "id": "L", "x": -28.0122, "y": 0, "label": "L", "labelDx": -8, "labelDy": 14 }
+        ],
+        "segments": [
+          { "from": "AL", "to": "AR", "arrowEnd": "both" },
+          { "from": "BL", "to": "BR", "arrowEnd": "both" },
+          { "from": "CT", "to": "CB", "arrowEnd": "both" }
+        ],
+        "angles": [
+          { "vertex": "K", "from": "CT", "to": "AR", "label": "∠2", "arcs": 1, "radius": 14 },
+          { "vertex": "L", "from": "K", "to": "BL", "label": "∠5", "arcs": 1, "radius": 14 }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "Секущая c пересекает прямые a и b. Угол ∠2 при пересечении a и c равен 55°. Угол ∠5 при пересечении b и c равен 125°. Угол ∠4 вертикальный с ∠2, а угол ∠6 смежный с ∠5. Параллельны ли a и b?",
         "steps": [

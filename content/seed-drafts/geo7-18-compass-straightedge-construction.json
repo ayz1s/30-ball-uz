@@ -88,6 +88,35 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Построение угла, равного данному: дуга из A даёт точки M, N; тот же радиус откладывается из O, получая K; хорда MN переносится от K, получая L; луч OL — вторая сторона нового угла",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": -4 },
+          { "id": "M", "x": 30, "y": 0, "label": "M", "labelDx": 4, "labelDy": 14 },
+          { "id": "N", "x": 15, "y": 25.98, "label": "N", "labelDx": -6, "labelDy": -12 },
+          { "id": "O", "x": 120, "y": 0, "label": "O", "labelDx": -14, "labelDy": -4 },
+          { "id": "K", "x": 150, "y": 0, "label": "K", "labelDx": 4, "labelDy": 14 },
+          { "id": "L", "x": 135, "y": 25.98, "label": "L", "labelDx": -6, "labelDy": -12 }
+        ],
+        "segments": [
+          { "from": "A", "to": "M", "ticks": 1, "arrowEnd": "to" },
+          { "from": "A", "to": "N", "ticks": 1, "arrowEnd": "to" },
+          { "from": "O", "to": "K", "ticks": 1, "arrowEnd": "to" },
+          { "from": "O", "to": "L", "ticks": 1, "arrowEnd": "to" },
+          { "from": "M", "to": "N", "ticks": 2, "style": "dashed" },
+          { "from": "K", "to": "L", "ticks": 2, "style": "dashed" }
+        ],
+        "angles": [
+          { "vertex": "A", "from": "M", "to": "N", "label": "60°", "arcs": 1 },
+          { "vertex": "O", "from": "K", "to": "L", "label": "60°", "arcs": 1 }
+        ],
+        "circles": [
+          { "center": "A", "radius": 30, "style": "dashed" },
+          { "center": "O", "radius": 30, "style": "dashed" },
+          { "center": "K", "radius": 30, "style": "dashed" }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "Дан угол ∠BAC = 80°. Построить его биссектрису.",
         "steps": [
@@ -164,6 +193,29 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Середина отрезка AB через две окружности одинакового радиуса из A и B: прямая CD — серединный перпендикуляр, O — середина AB",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": -4 },
+          { "id": "B", "x": 120, "y": 0, "label": "B", "labelDx": 10, "labelDy": -4 },
+          { "id": "C", "x": 60, "y": 52.915, "label": "C", "labelDx": 8, "labelDy": -8 },
+          { "id": "D", "x": 60, "y": -52.915, "label": "D", "labelDx": 8, "labelDy": 14 },
+          { "id": "O", "x": 60, "y": 0, "label": "O", "labelDx": -14, "labelDy": 12 }
+        ],
+        "segments": [
+          { "from": "A", "to": "O", "ticks": 1 },
+          { "from": "O", "to": "B", "ticks": 1 },
+          { "from": "C", "to": "D", "arrowEnd": "both" }
+        ],
+        "angles": [
+          { "vertex": "O", "from": "A", "to": "C", "right": true }
+        ],
+        "circles": [
+          { "center": "A", "radius": 80, "style": "dashed" },
+          { "center": "B", "radius": 80, "style": "dashed" }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "Построить треугольник со сторонами a = 3 см, b = 4 см, c = 5 см.",
         "steps": [
@@ -187,6 +239,24 @@
             "text": "Соединяем C с A и B. ΔABC — искомый треугольник.",
             "explanation": "По построению AB = 5 см, AC = 4 см, BC = 3 см."
           }
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Треугольник по трём сторонам: точка C — пересечение дуги радиуса b из A и дуги радиуса a из B",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 100, "y": 0, "label": "B", "labelDx": 10, "labelDy": 6 },
+          { "id": "C", "x": 64, "y": 48, "label": "C", "labelDx": 6, "labelDy": -10 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B" },
+          { "from": "A", "to": "C" },
+          { "from": "B", "to": "C" }
+        ],
+        "circles": [
+          { "center": "A", "radius": 80, "style": "dashed" },
+          { "center": "B", "radius": 60, "style": "dashed" }
         ]
       },
       {

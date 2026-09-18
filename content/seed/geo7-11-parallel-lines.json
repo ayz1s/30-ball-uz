@@ -168,6 +168,29 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Секущая c пересекает параллельные прямые a и b. Отмечены накрест лежащие углы ∠3 и ∠5 — они равны, так как a‖b.",
+        "points": [
+          { "id": "AL", "x": -50, "y": 40, "label": "a", "labelDx": -6, "labelDy": -8 },
+          { "id": "AR", "x": 50, "y": 40 },
+          { "id": "BL", "x": -50, "y": 0, "label": "b", "labelDx": -6, "labelDy": 14 },
+          { "id": "BR", "x": 50, "y": 0 },
+          { "id": "CT", "x": -10, "y": 60, "label": "c", "labelDx": 8, "labelDy": -6 },
+          { "id": "CB", "x": 30, "y": -20 },
+          { "id": "K", "x": 0, "y": 40, "label": "K", "labelDx": 10, "labelDy": -10 },
+          { "id": "L", "x": 20, "y": 0, "label": "L", "labelDx": 10, "labelDy": 14 }
+        ],
+        "segments": [
+          { "from": "AL", "to": "AR", "arrowEnd": "both" },
+          { "from": "BL", "to": "BR", "arrowEnd": "both" },
+          { "from": "CT", "to": "CB", "arrowEnd": "both" }
+        ],
+        "angles": [
+          { "vertex": "K", "from": "L", "to": "AR", "label": "∠3", "arcs": 2, "radius": 14 },
+          { "vertex": "L", "from": "K", "to": "BL", "label": "∠5", "arcs": 2, "radius": 14 }
+        ]
+      },
+      {
         "type": "rule",
         "rule": "Три пары углов, образованных при пересечении двух прямых секущей:",
         "examples": [

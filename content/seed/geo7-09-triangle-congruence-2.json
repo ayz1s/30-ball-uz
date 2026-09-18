@@ -73,6 +73,32 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "ΔABC и ΔA₁B₁C₁: AB=A₁B₁=6 — сторона между углами ∠A=∠A₁=40° и ∠B=∠B₁=60° — признак УСУ",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 6, "y": 0, "label": "B", "labelDx": 6, "labelDy": 6 },
+          { "id": "C", "x": 4.04, "y": 3.39, "label": "C", "labelDx": 4, "labelDy": -8 },
+          { "id": "A1", "x": 15, "y": 0, "label": "A₁", "labelDx": -16, "labelDy": 6 },
+          { "id": "B1", "x": 21, "y": 0, "label": "B₁", "labelDx": 6, "labelDy": 6 },
+          { "id": "C1", "x": 19.04, "y": 3.39, "label": "C₁", "labelDx": 4, "labelDy": -8 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B", "ticks": 1 },
+          { "from": "B", "to": "C" },
+          { "from": "C", "to": "A" },
+          { "from": "A1", "to": "B1", "ticks": 1 },
+          { "from": "B1", "to": "C1" },
+          { "from": "C1", "to": "A1" }
+        ],
+        "angles": [
+          { "vertex": "A", "from": "B", "to": "C", "label": "40°", "arcs": 1, "radius": 14 },
+          { "vertex": "B", "from": "A", "to": "C", "label": "60°", "arcs": 2, "radius": 14 },
+          { "vertex": "A1", "from": "B1", "to": "C1", "label": "40°", "arcs": 1, "radius": 14 },
+          { "vertex": "B1", "from": "A1", "to": "C1", "label": "60°", "arcs": 2, "radius": 14 }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "В треугольнике ABC сторона AB = 6 см, угол при вершине A равен 40°, угол при вершине B равен 60°. В треугольнике A₁B₁C₁ сторона A₁B₁ = 6 см, угол при A₁ равен 40°, угол при B₁ равен 60°. Докажите равенство треугольников и найдите BC, если B₁C₁ = 5 см.",
         "steps": [

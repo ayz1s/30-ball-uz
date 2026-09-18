@@ -95,6 +95,66 @@ export const decisionTreeBlockSchema = z.object({
   root: decisionNodeSchema,
 });
 
+// Точный геометрический чертёж (SVG), а не картинка и не ASCII-арт: точки
+// заданы координатами, отрезки/углы/окружности — ссылками на id точек.
+// Нужен, потому что геометрию нельзя понять без наглядного рисунка —
+// текстовое описание "точка B над серединой AC" школьнику не наглядно.
+export const geoFigureBlockSchema = z.object({
+  type: z.literal("geoFigure"),
+  caption: z.string().min(1).optional(),
+  points: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        x: z.number(),
+        y: z.number(),
+        label: z.string().min(1).optional(),
+        // Смещение подписи от точки в единицах SVG, чтобы буква не
+        // накладывалась на линии чертежа. По умолчанию (6, -6).
+        labelDx: z.number().optional(),
+        labelDy: z.number().optional(),
+      }),
+    )
+    .min(1),
+  segments: z
+    .array(
+      z.object({
+        from: z.string().min(1),
+        to: z.string().min(1),
+        style: z.enum(["solid", "dashed"]).optional(),
+        // Засечки равенства сторон (1-3 чёрточки на середине отрезка).
+        ticks: z.number().int().min(0).max(3).optional(),
+        // Стрелка на конце — для луча/прямой, а не отрезка.
+        arrowEnd: z.enum(["none", "from", "to", "both"]).optional(),
+      }),
+    )
+    .min(1),
+  angles: z
+    .array(
+      z.object({
+        vertex: z.string().min(1),
+        from: z.string().min(1),
+        to: z.string().min(1),
+        label: z.string().min(1).optional(),
+        // Прямой угол рисуется квадратиком, а не дугой.
+        right: z.boolean().optional(),
+        // 1-3 дуги подряд — способ показать, что углы равны между собой.
+        arcs: z.number().int().min(1).max(3).optional(),
+        radius: z.number().positive().optional(),
+      }),
+    )
+    .optional(),
+  circles: z
+    .array(
+      z.object({
+        center: z.string().min(1),
+        radius: z.number().positive(),
+        style: z.enum(["solid", "dashed"]).optional(),
+      }),
+    )
+    .optional(),
+});
+
 export const firstStepBlockSchema = z.object({
   type: z.literal("firstStep"),
   problem: z.string().min(1),
@@ -225,6 +285,7 @@ export const blockSchema = z.discriminatedUnion("type", [
   flashcardsBlockSchema,
   imageBlockSchema,
   linkedFormulaBlockSchema,
+  geoFigureBlockSchema,
   stepsBlockSchema,
   decisionTreeBlockSchema,
   firstStepBlockSchema,
@@ -253,6 +314,7 @@ export const BLOCK_TAB: Record<BlockType, "theory" | "scheme" | "cards"> = {
   flashcards: "cards",
   image: "scheme",
   linkedFormula: "scheme",
+  geoFigure: "scheme",
   steps: "scheme",
   decisionTree: "scheme",
   firstStep: "scheme",

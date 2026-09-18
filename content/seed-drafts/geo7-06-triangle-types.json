@@ -21,6 +21,25 @@
     "published": true,
     "blocks": [
       {
+        "type": "geoFigure",
+        "caption": "Треугольник ABC: вершины A, B, C; стороны AB, BC, CA; углы при вершинах",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 40, "y": 60, "label": "B", "labelDx": -4, "labelDy": -12 },
+          { "id": "C", "x": 90, "y": 0, "label": "C", "labelDx": 10, "labelDy": 6 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B", "ticks": 0 },
+          { "from": "B", "to": "C", "ticks": 0 },
+          { "from": "C", "to": "A", "ticks": 0 }
+        ],
+        "angles": [
+          { "vertex": "A", "from": "B", "to": "C", "radius": 16 },
+          { "vertex": "B", "from": "A", "to": "C", "radius": 16 },
+          { "vertex": "C", "from": "B", "to": "A", "radius": 16 }
+        ]
+      },
+      {
         "type": "text",
         "paragraphs": [
           [

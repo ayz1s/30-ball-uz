@@ -58,6 +58,24 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Прямые a и b пересекаются под прямым углом: a ⊥ b",
+        "points": [
+          { "id": "a1", "x": 0, "y": -40 },
+          { "id": "a2", "x": 0, "y": 40, "label": "a", "labelDx": 6, "labelDy": -6 },
+          { "id": "b1", "x": -40, "y": 0 },
+          { "id": "b2", "x": 40, "y": 0, "label": "b", "labelDx": 8, "labelDy": 6 },
+          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": -16, "labelDy": 14 }
+        ],
+        "segments": [
+          { "from": "a1", "to": "a2", "arrowEnd": "both" },
+          { "from": "b1", "to": "b2", "arrowEnd": "both" }
+        ],
+        "angles": [
+          { "vertex": "O", "from": "b2", "to": "a2", "right": true }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "Прямые AB и CD пересекаются в точке O. Угол AOC равен 90°. Найдите углы COB, BOD и DOA.",
         "steps": [
@@ -148,7 +166,31 @@
             {
               "text": "      A\n     /|\n    / |\n   /  |  ← перпендикуляр AB\n  C   B\n\nAB ⊥ a, AC — наклонная"
             }
-          ],
+          ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "AB — перпендикуляр к прямой a (угол при B прямой), AC — наклонная: AB короче AC",
+        "points": [
+          { "id": "A", "x": -10, "y": 40, "label": "A", "labelDx": -4, "labelDy": -8 },
+          { "id": "L1", "x": -50, "y": 0 },
+          { "id": "L2", "x": 50, "y": 0, "label": "a", "labelDx": 8, "labelDy": 4 },
+          { "id": "B", "x": -10, "y": 0, "label": "B", "labelDx": -4, "labelDy": 16 },
+          { "id": "C", "x": 30, "y": 0, "label": "C", "labelDx": 4, "labelDy": 16 }
+        ],
+        "segments": [
+          { "from": "L1", "to": "L2", "arrowEnd": "both" },
+          { "from": "A", "to": "B" },
+          { "from": "A", "to": "C" }
+        ],
+        "angles": [
+          { "vertex": "B", "from": "A", "to": "C", "right": true }
+        ]
+      },
+      {
+        "type": "text",
+        "paragraphs": [
           [
             {
               "text": "Расстояние от точки A до прямой a — это длина перпендикуляра AB. По аналогии с отрезком: расстояние между двумя точками — длина отрезка, а расстояние от точки до прямой — длина перпендикуляра."

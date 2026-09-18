@@ -134,12 +134,38 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Отрезок AB с серединой M: AM = MB",
+        "points": [
+          { "id": "A", "x": -40, "y": 0, "label": "A", "labelDx": -14, "labelDy": 16 },
+          { "id": "M", "x": 0, "y": 0, "label": "M", "labelDx": -4, "labelDy": 16 },
+          { "id": "B", "x": 40, "y": 0, "label": "B", "labelDx": 6, "labelDy": 16 }
+        ],
+        "segments": [
+          { "from": "A", "to": "M", "ticks": 1 },
+          { "from": "M", "to": "B", "ticks": 1 }
+        ]
+      },
+      {
         "type": "rule",
         "rule": "Если точка B лежит между A и C на прямой, то AC = AB + BC. Если точка B не лежит на отрезке AC, то AC < AB + BC.",
         "examples": [
           "A—B—C: AB = 3 см, BC = 4 см → AC = 7 см",
           "B—A—C: AB = 2 см, AC = 5 см, BC = 7 см → 5 < 2 + 7",
           "Точки образуют треугольник: AB = 3 см, BC = 4 см, AC = 5 см → 5 < 3 + 4"
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Точка B лежит между A и C: AC = AB + BC",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -6, "labelDy": 16 },
+          { "id": "B", "x": 30, "y": 0, "label": "B", "labelDx": -4, "labelDy": 16 },
+          { "id": "C", "x": 70, "y": 0, "label": "C", "labelDx": 6, "labelDy": 16 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B" },
+          { "from": "B", "to": "C" }
         ]
       },
       {
@@ -262,6 +288,26 @@
               "text": "Круг — ГМТ точек, находящихся от центра на расстоянии не больше данного радиуса. Круг включает саму окружность и всю внутреннюю область."
             }
           ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Окружность с центром O: OR — радиус, KL — диаметр (проходит через центр), MN — хорда",
+        "points": [
+          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": -4, "labelDy": 16 },
+          { "id": "R", "x": 20, "y": 34.64, "label": "R", "labelDx": 8, "labelDy": -6 },
+          { "id": "K", "x": -40, "y": 0, "label": "K", "labelDx": -16, "labelDy": 4 },
+          { "id": "L", "x": 40, "y": 0, "label": "L", "labelDx": 8, "labelDy": 4 },
+          { "id": "M", "x": -34.64, "y": 20, "label": "M", "labelDx": -14, "labelDy": -8 },
+          { "id": "N", "x": 37.59, "y": 13.68, "label": "N", "labelDx": 8, "labelDy": -8 }
+        ],
+        "segments": [
+          { "from": "O", "to": "R" },
+          { "from": "K", "to": "L" },
+          { "from": "M", "to": "N" }
+        ],
+        "circles": [
+          { "center": "O", "radius": 40 }
         ]
       },
       {

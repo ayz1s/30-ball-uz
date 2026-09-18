@@ -80,6 +80,26 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Медиана CD к гипотенузе AB в прямоугольном треугольнике ABC (∠C = 90°): CD = ½·AB",
+        "points": [
+          { "id": "A", "x": 0, "y": 60, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "C", "x": 0, "y": 0, "label": "C", "labelDx": -14, "labelDy": -6 },
+          { "id": "B", "x": 80, "y": 0, "label": "B", "labelDx": 10, "labelDy": -6 },
+          { "id": "D", "x": 40, "y": 30, "label": "D", "labelDx": 10, "labelDy": 4 }
+        ],
+        "segments": [
+          { "from": "A", "to": "C" },
+          { "from": "C", "to": "B" },
+          { "from": "A", "to": "D", "ticks": 1 },
+          { "from": "D", "to": "B", "ticks": 1 },
+          { "from": "C", "to": "D", "style": "dashed" }
+        ],
+        "angles": [
+          { "vertex": "C", "from": "A", "to": "B", "right": true }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "В прямоугольном треугольнике ABC (∠C = 90°) медиана CM к гипотенузе AB равна 6,5 см, а угол A равен 25°. Найдите гипотенузу AB и угол CMB.",
         "steps": [
@@ -154,6 +174,29 @@
               "text": "Треугольники OAD и OBD прямоугольные (∠A = ∠B = 90°). Углы AOD и BOD равны, потому что OC делит угол пополам. Гипотенуза OD общая. Значит, треугольники равны по гипотенузе и острому углу (ГУ). Отсюда катеты DA и DB равны, то есть точка D одинаково удалена от сторон угла."
             }
           ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Точка D на биссектрисе угла O равноудалена от его сторон: DA = DB, углы при A и B прямые",
+        "points": [
+          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": -14, "labelDy": 0 },
+          { "id": "A", "x": 60, "y": 34.641, "label": "A", "labelDx": -4, "labelDy": 14 },
+          { "id": "B", "x": 60, "y": -34.641, "label": "B", "labelDx": -4, "labelDy": -16 },
+          { "id": "D", "x": 80, "y": 0, "label": "D", "labelDx": 8, "labelDy": 10 }
+        ],
+        "segments": [
+          { "from": "O", "to": "A", "arrowEnd": "to" },
+          { "from": "O", "to": "B", "arrowEnd": "to" },
+          { "from": "O", "to": "D", "style": "dashed", "arrowEnd": "to" },
+          { "from": "A", "to": "D" },
+          { "from": "B", "to": "D" }
+        ],
+        "angles": [
+          { "vertex": "O", "from": "A", "to": "D", "arcs": 1 },
+          { "vertex": "O", "from": "D", "to": "B", "arcs": 1 },
+          { "vertex": "A", "from": "O", "to": "D", "right": true },
+          { "vertex": "B", "from": "O", "to": "D", "right": true }
         ]
       },
       {

@@ -88,6 +88,23 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Прямоугольный треугольник ABC: прямой угол при C, гипотенуза AB, катеты AC и BC",
+        "points": [
+          { "id": "A", "x": 0, "y": 50, "label": "A", "labelDx": -14, "labelDy": 8 },
+          { "id": "C", "x": 0, "y": 0, "label": "C", "labelDx": -14, "labelDy": -6 },
+          { "id": "B", "x": 70, "y": 0, "label": "B", "labelDx": 10, "labelDy": -6 }
+        ],
+        "segments": [
+          { "from": "A", "to": "C" },
+          { "from": "C", "to": "B" },
+          { "from": "A", "to": "B" }
+        ],
+        "angles": [
+          { "vertex": "C", "from": "A", "to": "B", "right": true }
+        ]
+      },
+      {
         "type": "text",
         "paragraphs": [
           [
@@ -167,6 +184,25 @@
               "text": "Но AD = AC + CD = AC + AC = 2AC. Значит AB = 2AC, то есть AC = AB / 2."
             }
           ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Катет AC лежит против угла B = 30° и равен половине гипотенузы AB",
+        "points": [
+          { "id": "C", "x": 0, "y": 0, "label": "C", "labelDx": -14, "labelDy": -6 },
+          { "id": "A", "x": 40, "y": 0, "label": "A", "labelDx": 10, "labelDy": -6 },
+          { "id": "B", "x": 0, "y": 69.282, "label": "B", "labelDx": -14, "labelDy": 8 }
+        ],
+        "segments": [
+          { "from": "C", "to": "A" },
+          { "from": "C", "to": "B" },
+          { "from": "A", "to": "B" }
+        ],
+        "angles": [
+          { "vertex": "C", "from": "A", "to": "B", "right": true },
+          { "vertex": "B", "from": "A", "to": "C", "label": "30°", "arcs": 1 },
+          { "vertex": "A", "from": "B", "to": "C", "label": "60°", "arcs": 1 }
         ]
       },
       {

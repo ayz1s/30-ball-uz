@@ -98,11 +98,39 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Точка A принадлежит прямой a (A∈a), точка C не принадлежит прямой a (C∉a)",
+        "points": [
+          { "id": "p1", "x": -40, "y": 0 },
+          { "id": "p2", "x": 40, "y": 0, "label": "a", "labelDx": 10, "labelDy": 6 },
+          { "id": "A", "x": -10, "y": 0, "label": "A", "labelDx": -6, "labelDy": 16 },
+          { "id": "C", "x": 5, "y": 28, "label": "C", "labelDx": 10, "labelDy": 0 }
+        ],
+        "segments": [
+          { "from": "p1", "to": "p2", "arrowEnd": "both" }
+        ]
+      },
+      {
         "type": "rule",
         "rule": "Если точка O принадлежит и прямой b, и прямой c, то прямые b и c пересекаются в точке O, и O называется точкой пересечения.",
         "examples": [
           "O∈b и O∈c ⇒ O = b ∩ c",
           "Если K∈m и K∈n, то K — точка пересечения m и n"
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Прямые b и c пересекаются в точке O",
+        "points": [
+          { "id": "b1", "x": -40, "y": -10 },
+          { "id": "b2", "x": 40, "y": 10, "label": "b", "labelDx": 8, "labelDy": 6 },
+          { "id": "c1", "x": -20, "y": 40, "label": "c", "labelDx": -4, "labelDy": -8 },
+          { "id": "c2", "x": 20, "y": -40 },
+          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": 8, "labelDy": 16 }
+        ],
+        "segments": [
+          { "from": "b1", "to": "b2", "arrowEnd": "both" },
+          { "from": "c1", "to": "c2", "arrowEnd": "both" }
         ]
       },
       {

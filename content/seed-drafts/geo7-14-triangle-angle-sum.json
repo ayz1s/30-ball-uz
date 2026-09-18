@@ -71,6 +71,30 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "Треугольник ABC. Через вершину A проведена прямая a, параллельная стороне BC. ∠4 = ∠1 и ∠5 = ∠3 (накрест лежащие), а ∠4 + ∠2 + ∠5 = 180° — развёрнутый угол. Значит ∠1 + ∠2 + ∠3 = 180°.",
+        "points": [
+          { "id": "A", "x": 35, "y": 70, "label": "A", "labelDx": -4, "labelDy": -10 },
+          { "id": "B", "x": 0, "y": 0, "label": "B", "labelDx": -14, "labelDy": 14 },
+          { "id": "C", "x": 100, "y": 0, "label": "C", "labelDx": 10, "labelDy": 14 },
+          { "id": "AL", "x": -25, "y": 70, "label": "a", "labelDx": -6, "labelDy": -6 },
+          { "id": "AR", "x": 95, "y": 70 }
+        ],
+        "segments": [
+          { "from": "B", "to": "A" },
+          { "from": "B", "to": "C" },
+          { "from": "C", "to": "A" },
+          { "from": "AL", "to": "AR", "style": "dashed", "arrowEnd": "both" }
+        ],
+        "angles": [
+          { "vertex": "B", "from": "A", "to": "C", "label": "1", "radius": 16 },
+          { "vertex": "A", "from": "B", "to": "C", "label": "2", "radius": 14 },
+          { "vertex": "C", "from": "B", "to": "A", "label": "3", "radius": 16 },
+          { "vertex": "A", "from": "AL", "to": "B", "label": "4", "radius": 11 },
+          { "vertex": "A", "from": "AR", "to": "C", "label": "5", "radius": 11 }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "В треугольнике углы относятся как 2 : 3 : 7. Найди градусную меру каждого угла.",
         "steps": [
@@ -161,6 +185,28 @@
               "text": "На схеме продолжена сторона BC до точки D:\n\n         A\n        / \\\n       /   \\\n      / 60° \\\n     B———————C———D\n            120°\n\nВнутренний угол ACB = 60°, поэтому внешний угол ACD = 180° − 60° = 120°."
             }
           ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Сторона BC продолжена за точку C до точки D. Внутренний угол ACB = 60°, внешний угол ACD = 120°. Внешний угол равен сумме несмежных внутренних: ∠A + ∠B = 120°.",
+        "points": [
+          { "id": "A", "x": 60, "y": 69.28, "label": "A", "labelDx": -4, "labelDy": -10 },
+          { "id": "B", "x": 0, "y": 0, "label": "B", "labelDx": -14, "labelDy": 14 },
+          { "id": "C", "x": 100, "y": 0, "label": "C", "labelDx": -4, "labelDy": 14 },
+          { "id": "D", "x": 140, "y": 0, "label": "D", "labelDx": 10, "labelDy": 14 }
+        ],
+        "segments": [
+          { "from": "B", "to": "A" },
+          { "from": "A", "to": "C" },
+          { "from": "B", "to": "C" },
+          { "from": "C", "to": "D" }
+        ],
+        "angles": [
+          { "vertex": "B", "from": "A", "to": "C", "label": "∠B", "radius": 16 },
+          { "vertex": "A", "from": "B", "to": "C", "label": "∠A", "radius": 14 },
+          { "vertex": "C", "from": "A", "to": "B", "label": "60°", "radius": 14 },
+          { "vertex": "C", "from": "A", "to": "D", "label": "120°", "radius": 24 }
         ]
       },
       {

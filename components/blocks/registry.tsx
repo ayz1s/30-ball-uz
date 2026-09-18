@@ -4,6 +4,7 @@ import { RuleBlock } from "./rule-block";
 import { FlashcardsBlock } from "./flashcards-block";
 import { ImageBlock } from "./image-block";
 import { LinkedFormulaBlock } from "./linked-formula-block";
+import { GeoFigureBlock } from "./geo-figure-block";
 import { StepsBlock } from "./steps-block";
 import { DecisionTreeBlock } from "./decision-tree-block";
 import { FirstStepBlock } from "./first-step-block";
@@ -28,6 +29,7 @@ const registry: Record<BlockType, ComponentType<{ block: any; locale: Locale }>>
   flashcards: FlashcardsBlock,
   image: ImageBlock,
   linkedFormula: LinkedFormulaBlock,
+  geoFigure: GeoFigureBlock,
   steps: StepsBlock,
   decisionTree: DecisionTreeBlock,
   firstStep: FirstStepBlock,
@@ -55,6 +57,7 @@ export interface RawBlock {
 const BLOCK_KICKER: Partial<Record<BlockType, DictKey>> = {
   rule: "blockKickerRule",
   linkedFormula: "blockKickerLinkedFormula",
+  geoFigure: "blockKickerGeoFigure",
   steps: "blockKickerSteps",
   decisionTree: "blockKickerDecisionTree",
   firstStep: "blockKickerFirstStep",

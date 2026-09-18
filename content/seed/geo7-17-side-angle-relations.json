@@ -43,6 +43,24 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "В треугольнике ABC сторона AB (против угла C) длиннее стороны AC (против угла B): большей стороне соответствует больший угол",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 72, "y": 0, "label": "B", "labelDx": 8, "labelDy": 6 },
+          { "id": "C", "x": 25.33, "y": 30.96, "label": "C", "labelDx": -6, "labelDy": -12 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B" },
+          { "from": "B", "to": "C" },
+          { "from": "C", "to": "A" }
+        ],
+        "angles": [
+          { "vertex": "B", "from": "A", "to": "C", "radius": 16 },
+          { "vertex": "C", "from": "B", "to": "A", "radius": 16 }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "В треугольнике ABC сторона AB = 9 см, сторона AC = 5 см. Доказать, что угол C больше угла B.",
         "steps": [
@@ -124,6 +142,23 @@
             "text": "Против угла CDB (115°) лежит сторона BC. Против угла B (60°) лежит сторона CD. Значит, BC > CD, то есть CD < BC.",
             "explanation": "В треугольнике CDB сторона BC лежит против вершины D, а сторона CD — против вершины B. Значит, BC > CD."
           }
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Вспомогательное построение для доказательства неравенства треугольника: сторона AB продолжена за точку B до точки D так, что BD = BC",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -6, "labelDy": 14 },
+          { "id": "B", "x": 70, "y": 0, "label": "B", "labelDx": -4, "labelDy": 14 },
+          { "id": "D", "x": 110, "y": 0, "label": "D", "labelDx": 6, "labelDy": 14 },
+          { "id": "C", "x": 50, "y": 34.64, "label": "C", "labelDx": -4, "labelDy": -14 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B" },
+          { "from": "B", "to": "D", "style": "dashed", "ticks": 1 },
+          { "from": "B", "to": "C", "ticks": 1 },
+          { "from": "C", "to": "A" },
+          { "from": "C", "to": "D", "style": "dashed" }
         ]
       },
       {

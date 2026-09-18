@@ -83,6 +83,26 @@
         ]
       },
       {
+        "type": "geoFigure",
+        "caption": "ΔABC и ΔDEF: AB=DE=5, BC=EF=6, AC=DF=7 — все три стороны равны, признак ССС",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 5, "y": 0, "label": "B", "labelDx": 6, "labelDy": 6 },
+          { "id": "C", "x": 3.8, "y": 5.88, "label": "C", "labelDx": 4, "labelDy": -8 },
+          { "id": "D", "x": 15, "y": 0, "label": "D", "labelDx": -14, "labelDy": 6 },
+          { "id": "E", "x": 20, "y": 0, "label": "E", "labelDx": 6, "labelDy": 6 },
+          { "id": "F", "x": 18.8, "y": 5.88, "label": "F", "labelDx": 4, "labelDy": -8 }
+        ],
+        "segments": [
+          { "from": "A", "to": "B", "ticks": 1 },
+          { "from": "B", "to": "C", "ticks": 2 },
+          { "from": "C", "to": "A", "ticks": 3 },
+          { "from": "D", "to": "E", "ticks": 1 },
+          { "from": "E", "to": "F", "ticks": 2 },
+          { "from": "F", "to": "D", "ticks": 3 }
+        ]
+      },
+      {
         "type": "steps",
         "condition": "Даны два треугольника ABC и DEF. Известно: AB = DE = 5 см, BC = EF = 6 см, AC = DF = 7 см. Угол D равен 40°. Найти угол A.",
         "steps": [
@@ -158,6 +178,28 @@
               "text": "Схема:\n\nA ———— O ———— B\n         |\n         |  ← перпендикуляр\n         |\n         M\n\nO — середина AB. Прямая через O перпендикулярна AB."
             }
           ]
+        ]
+      },
+      {
+        "type": "geoFigure",
+        "caption": "Отрезок AB=10, O — середина, серединный перпендикуляр (пунктир) проходит через O, точка C на нём: OC=3, AC=BC",
+        "points": [
+          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
+          { "id": "B", "x": 10, "y": 0, "label": "B", "labelDx": 6, "labelDy": 6 },
+          { "id": "O", "x": 5, "y": 0, "label": "O", "labelDx": -4, "labelDy": 16 },
+          { "id": "C", "x": 5, "y": 3, "label": "C", "labelDx": 8, "labelDy": -4 },
+          { "id": "P1", "x": 5, "y": -3 },
+          { "id": "P2", "x": 5, "y": 9 }
+        ],
+        "segments": [
+          { "from": "A", "to": "O", "ticks": 1 },
+          { "from": "O", "to": "B", "ticks": 1 },
+          { "from": "P1", "to": "P2", "style": "dashed", "arrowEnd": "both" },
+          { "from": "C", "to": "A" },
+          { "from": "C", "to": "B" }
+        ],
+        "angles": [
+          { "vertex": "O", "from": "A", "to": "P2", "right": true }
         ]
       },
       {
