@@ -45,7 +45,10 @@ if (!gradeNumberMatch) {
 }
 const classOrder = Number(gradeNumberMatch[0]) - 5;
 const outPath = arg("out");
-const coverage = arg("coverage", false);
+// tsx's CLI truncates any argv entry at the first newline, so a multiline --coverage
+// value silently loses everything after line 1. Read from a file instead to avoid this.
+const coverageFile = arg("coverageFile", false);
+const coverage = coverageFile ? fs.readFileSync(coverageFile, "utf-8") : arg("coverage", false);
 
 const coverageSection = coverage
   ? `\n### Обязательное покрытие техник\n\nПо программе в этой теме реально разбираются следующие техники/подтемы (список составлен по оглавлению и структуре учебника, без копирования текста). Заведи под каждый пункт отдельный блок (steps/rule/decisionTree) — тема не должна ограничиваться одной техникой:\n\n${coverage}\n`
