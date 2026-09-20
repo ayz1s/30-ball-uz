@@ -6,27 +6,41 @@
 //   npx tsx scripts/describe-geo-figure.ts content/seed-drafts/geo7-06-triangle-types.json
 import fs from "fs";
 
-function dist(a: { x: number; y: number }, b: { x: number; y: number }): number {
-  return Math.hypot(a.x - b.x, a.y - b.y);
+// Точки со стереометрических чертежей (grade 10+) несут необязательное z —
+// все вычисления ниже РЕАЛЬНЫЕ 3D-величины (z по умолчанию 0 для плоских
+// чертежей), а не по экранным/проецированным координатам: реальная длина
+// ребра куба в задаче — это 3D-расстояние, а не то, что видно на кабинетной
+// проекции на экране.
+type Pt = { x: number; y: number; z?: number };
+
+function dist(a: Pt, b: Pt): number {
+  return Math.hypot(a.x - b.x, a.y - b.y, (a.z ?? 0) - (b.z ?? 0));
 }
 
-function angleDeg(vertex: { x: number; y: number }, from: { x: number; y: number }, to: { x: number; y: number }): number {
+function angleDeg(vertex: Pt, from: Pt, to: Pt): number {
   const v1x = from.x - vertex.x;
   const v1y = from.y - vertex.y;
+  const v1z = (from.z ?? 0) - (vertex.z ?? 0);
   const v2x = to.x - vertex.x;
   const v2y = to.y - vertex.y;
-  const dot = v1x * v2x + v1y * v2y;
-  const mag = Math.hypot(v1x, v1y) * Math.hypot(v2x, v2y);
+  const v2z = (to.z ?? 0) - (vertex.z ?? 0);
+  const dot = v1x * v2x + v1y * v2y + v1z * v2z;
+  const mag = Math.hypot(v1x, v1y, v1z) * Math.hypot(v2x, v2y, v2z);
   return (Math.acos(Math.max(-1, Math.min(1, dot / mag))) * 180) / Math.PI;
 }
 
-function isParallel(a1: { x: number; y: number }, a2: { x: number; y: number }, b1: { x: number; y: number }, b2: { x: number; y: number }): boolean {
+function isParallel(a1: Pt, a2: Pt, b1: Pt, b2: Pt): boolean {
   const ux = a2.x - a1.x;
   const uy = a2.y - a1.y;
+  const uz = (a2.z ?? 0) - (a1.z ?? 0);
   const vx = b2.x - b1.x;
   const vy = b2.y - b1.y;
-  const cross = ux * vy - uy * vx;
-  return Math.abs(cross) < 1e-6;
+  const vz = (b2.z ?? 0) - (b1.z ?? 0);
+  // Параллельны, если векторное произведение — нулевой вектор.
+  const cx = uy * vz - uz * vy;
+  const cy = uz * vx - ux * vz;
+  const cz = ux * vy - uy * vx;
+  return Math.hypot(cx, cy, cz) < 1e-6;
 }
 
 const file = process.argv[2];
@@ -44,10 +58,16 @@ blocks.forEach((block, i) => {
   if (onlyIndex !== undefined && i !== onlyIndex) return;
 
   console.log(`\n=== Block #${i}: ${(block.caption as string) ?? "(no caption)"} ===`);
-  const points = block.points as Array<{ id: string; x: number; y: number; label?: string }>;
+  const points = block.points as Array<{ id: string; x: number; y: number; z?: number; label?: string }>;
   const pointMap = new Map(points.map((p) => [p.id, p]));
+  const is3d = points.some((p) => p.z !== undefined);
 
-  console.log("Points:", points.map((p) => `${p.id}(${p.label ?? "?"})=(${p.x},${p.y})`).join(", "));
+  console.log(
+    "Points:",
+    points
+      .map((p) => (is3d ? `${p.id}(${p.label ?? "?"})=(${p.x},${p.y},${p.z ?? 0})` : `${p.id}(${p.label ?? "?"})=(${p.x},${p.y})`))
+      .join(", "),
+  );
 
   const segments = (block.segments as Array<{ from: string; to: string; ticks?: number; style?: string }>) ?? [];
   console.log("Segment lengths:");

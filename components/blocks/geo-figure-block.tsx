@@ -16,8 +16,27 @@ function unit(dx: number, dy: number): [number, number] {
   return [dx / len, dy / len];
 }
 
+// Кабинетная проекция (стандарт учебников стереометрии): ось z уходит
+// вглубь под 45° вправо-вверх с масштабом 0.5. Точки без z (обычные плоские
+// чертежи) проецируются как есть — cos45°*0.5*0 = 0, экранные координаты
+// не меняются, так что старые 2D-чертежи рендерятся без изменений.
+const DEPTH_ANGLE = Math.PI / 4;
+const DEPTH_SCALE = 0.5;
+
+function project(x: number, y: number, z: number | undefined): [number, number] {
+  const zz = z ?? 0;
+  const sx = x + zz * DEPTH_SCALE * Math.cos(DEPTH_ANGLE);
+  const sy = y + zz * DEPTH_SCALE * Math.sin(DEPTH_ANGLE);
+  return [sx, flip(sy)];
+}
+
 export function GeoFigureBlock({ block }: { block: GeoFigureBlockData; locale: Locale }) {
-  const pointMap = new Map(block.points.map((p) => [p.id, { ...p, cy: flip(p.y) }]));
+  const pointMap = new Map(
+    block.points.map((p) => {
+      const [sx, cy] = project(p.x, p.y, p.z);
+      return [p.id, { ...p, x: sx, cy }];
+    }),
+  );
 
   const xs: number[] = [];
   const ys: number[] = [];
