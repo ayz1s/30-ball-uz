@@ -25,10 +25,11 @@
         "paragraphs": [
           [
             {
-              "text": "Угол — это фигура, которая состоит из точки и двух лучей, выходящих из неё. Точка называется вершиной угла, а лучи — сторонами."
+              "text": "Угол — это фигура, которая состоит из точки и двух лучей, выходящих из неё.",
+              "highlight": true
             },
             {
-              "text": "Если из точки O идут лучи OA и OB, получается угол AOB. Вершину всегда пишут посередине: ∠AOB или ∠BOA. Когда рядом нет других углов с той же вершиной, можно писать коротко ∠O."
+              "text": " Точка называется вершиной угла, а лучи — сторонами.Если из точки O идут лучи OA и OB, получается угол AOB. Вершину всегда пишут посередине: ∠AOB или ∠BOA. Когда рядом нет других углов с той же вершиной, можно писать коротко ∠O."
             }
           ],
           [
@@ -53,16 +54,51 @@
         "type": "geoFigure",
         "caption": "Угол AOB: вершина O, стороны — лучи OA и OB",
         "points": [
-          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": -6, "labelDy": 16 },
-          { "id": "A", "x": 56.38, "y": 20.52, "label": "A", "labelDx": 8, "labelDy": 4 },
-          { "id": "B", "x": 20.52, "y": 56.38, "label": "B", "labelDx": 6, "labelDy": -6 }
+          {
+            "id": "O",
+            "x": 0,
+            "y": 0,
+            "label": "O",
+            "labelDx": -6,
+            "labelDy": 16
+          },
+          {
+            "id": "A",
+            "x": 56.38,
+            "y": 20.52,
+            "label": "A",
+            "labelDx": 8,
+            "labelDy": 4
+          },
+          {
+            "id": "B",
+            "x": 20.52,
+            "y": 56.38,
+            "label": "B",
+            "labelDx": 6,
+            "labelDy": -6
+          }
         ],
         "segments": [
-          { "from": "O", "to": "A", "arrowEnd": "to" },
-          { "from": "O", "to": "B", "arrowEnd": "to" }
+          {
+            "from": "O",
+            "to": "A",
+            "arrowEnd": "to"
+          },
+          {
+            "from": "O",
+            "to": "B",
+            "arrowEnd": "to"
+          }
         ],
         "angles": [
-          { "vertex": "O", "from": "A", "to": "B", "label": "∠AOB", "radius": 20 }
+          {
+            "vertex": "O",
+            "from": "A",
+            "to": "B",
+            "label": "∠AOB",
+            "radius": 20
+          }
         ]
       },
       {
@@ -119,20 +155,78 @@
         "type": "geoFigure",
         "caption": "∠AOB = ∠AOC + ∠COB = 45° + 75° = 120°",
         "points": [
-          { "id": "O", "x": 0, "y": 0, "label": "O", "labelDx": -6, "labelDy": 16 },
-          { "id": "A", "x": 60, "y": 0, "label": "A", "labelDx": 8, "labelDy": 4 },
-          { "id": "C", "x": 42.43, "y": 42.43, "label": "C", "labelDx": 6, "labelDy": -6 },
-          { "id": "B", "x": -30, "y": 51.96, "label": "B", "labelDx": -6, "labelDy": -6 }
+          {
+            "id": "O",
+            "x": 0,
+            "y": 0,
+            "label": "O",
+            "labelDx": -6,
+            "labelDy": 16
+          },
+          {
+            "id": "A",
+            "x": 60,
+            "y": 0,
+            "label": "A",
+            "labelDx": 8,
+            "labelDy": 4
+          },
+          {
+            "id": "C",
+            "x": 42.43,
+            "y": 42.43,
+            "label": "C",
+            "labelDx": 6,
+            "labelDy": -6
+          },
+          {
+            "id": "B",
+            "x": -30,
+            "y": 51.96,
+            "label": "B",
+            "labelDx": -6,
+            "labelDy": -6
+          }
         ],
         "segments": [
-          { "from": "O", "to": "A", "arrowEnd": "to" },
-          { "from": "O", "to": "C", "arrowEnd": "to" },
-          { "from": "O", "to": "B", "arrowEnd": "to" }
+          {
+            "from": "O",
+            "to": "A",
+            "arrowEnd": "to"
+          },
+          {
+            "from": "O",
+            "to": "C",
+            "arrowEnd": "to"
+          },
+          {
+            "from": "O",
+            "to": "B",
+            "arrowEnd": "to"
+          }
         ],
         "angles": [
-          { "vertex": "O", "from": "A", "to": "C", "label": "45°", "radius": 16 },
-          { "vertex": "O", "from": "C", "to": "B", "label": "75°", "radius": 16 },
-          { "vertex": "O", "from": "A", "to": "B", "label": "120°", "radius": 34 }
+          {
+            "vertex": "O",
+            "from": "A",
+            "to": "C",
+            "label": "45°",
+            "radius": 16
+          },
+          {
+            "vertex": "O",
+            "from": "C",
+            "to": "B",
+            "label": "75°",
+            "radius": 16
+          },
+          {
+            "vertex": "O",
+            "from": "A",
+            "to": "B",
+            "label": "120°",
+            "radius": 34
+          }
         ]
       },
       {
