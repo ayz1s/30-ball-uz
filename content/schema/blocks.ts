@@ -122,6 +122,8 @@ export const geoFigureBlockSchema = z.object({
         // накладывалась на линии чертежа. По умолчанию (6, -6).
         labelDx: z.number().optional(),
         labelDy: z.number().optional(),
+        // false — не рисовать кружок в точке (для точек, из которых собрана кривая графика).
+        dot: z.boolean().optional(),
       }),
     )
     .min(1),

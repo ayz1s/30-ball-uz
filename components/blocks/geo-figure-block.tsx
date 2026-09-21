@@ -266,7 +266,9 @@ export function GeoFigureBlock({ block }: { block: GeoFigureBlockData; locale: L
           const point = pointMap.get(p.id)!;
           return (
             <g key={p.id}>
-              <circle cx={point.x} cy={point.cy} r={2.5} fill="currentColor" className="text-neutral-900 dark:text-neutral-100" />
+              {p.dot !== false && (
+                <circle cx={point.x} cy={point.cy} r={2.5} fill="currentColor" className="text-neutral-900 dark:text-neutral-100" />
+              )}
               {p.label && (
                 <text
                   x={point.x + (p.labelDx ?? 6)}
