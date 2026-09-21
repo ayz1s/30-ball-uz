@@ -30,12 +30,26 @@ function project(x: number, y: number, z: number | undefined): [number, number] 
   return [sx, flip(sy)];
 }
 
+// Координаты в контенте бывают в "математических" единицах (A(3; 0), куб со
+// стороной 2), а подписи, засечки, дуги углов и стрелки нарисованы в пикселях
+// SVG. Без нормализации чертёж размахом в 3 единицы получается меньше одной
+// буквы подписи. Поэтому фигуру, размах которой меньше TARGET_SPAN, один раз
+// растягиваем до TARGET_SPAN (координаты и радиусы окружностей); пиксельные
+// размеры оформления не трогаем.
+const TARGET_SPAN = 200;
+
 export function GeoFigureBlock({ block }: { block: GeoFigureBlockData; locale: Locale }) {
+  const projected = block.points.map((p) => ({ p, xy: project(p.x, p.y, p.z) }));
+  const rawXs = projected.map(({ xy }) => xy[0]);
+  const rawYs = projected.map(({ xy }) => xy[1]);
+  const span = Math.max(
+    Math.max(...rawXs) - Math.min(...rawXs),
+    Math.max(...rawYs) - Math.min(...rawYs),
+  );
+  const k = span > 0 && span < TARGET_SPAN ? TARGET_SPAN / span : 1;
+
   const pointMap = new Map(
-    block.points.map((p) => {
-      const [sx, cy] = project(p.x, p.y, p.z);
-      return [p.id, { ...p, x: sx, cy }];
-    }),
+    projected.map(({ p, xy }) => [p.id, { ...p, x: xy[0] * k, cy: xy[1] * k }]),
   );
 
   const xs: number[] = [];
@@ -47,8 +61,8 @@ export function GeoFigureBlock({ block }: { block: GeoFigureBlockData; locale: L
   for (const c of block.circles ?? []) {
     const center = pointMap.get(c.center);
     if (!center) continue;
-    xs.push(center.x - c.radius, center.x + c.radius);
-    ys.push(center.cy - c.radius, center.cy + c.radius);
+    xs.push(center.x - c.radius * k, center.x + c.radius * k);
+    ys.push(center.cy - c.radius * k, center.cy + c.radius * k);
   }
   if (xs.length === 0) return null;
 
@@ -75,7 +89,7 @@ export function GeoFigureBlock({ block }: { block: GeoFigureBlockData; locale: L
               key={i}
               cx={center.x}
               cy={center.cy}
-              r={c.radius}
+              r={c.radius * k}
               fill="none"
               stroke="currentColor"
               className="text-neutral-500 dark:text-neutral-400"
