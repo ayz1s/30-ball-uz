@@ -23,7 +23,7 @@ export default async function MarkKnownPage({ params }: { params: Promise<{ key:
 
   return (
     <main className="min-h-dvh px-6 py-8">
-      <BackPill href={`/subject/${subject.key}`} label={t(locale, "backToSubject")} />
+      <BackPill href={`/subject/${subject.key}`} label={t(locale, "backToSubject")} inset={6} />
       <h1 className="mt-3 mb-4 text-xl font-semibold text-neutral-900 dark:text-neutral-100">{t(locale, "markKnownTitle")}</h1>
       <MarkKnownList topics={subject.topics} locale={locale} />
     </main>

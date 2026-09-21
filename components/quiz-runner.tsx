@@ -51,7 +51,7 @@ export function QuizRunner({
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center gap-3 px-6 pb-20 text-center">
         <p className="text-sm text-neutral-500 dark:text-neutral-400">{t(locale, "quizEmpty")}</p>
-        <BackPill href={backHref} label={t(locale, "backToTests")} />
+        <BackPill href={backHref} label={t(locale, "backToTests")} inset={6} />
         <BottomNav locale={locale} />
       </main>
     );
