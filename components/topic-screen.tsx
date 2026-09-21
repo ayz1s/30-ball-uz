@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BlockRenderer, type RawBlock } from "@/components/blocks/registry";
 import { BLOCK_TAB } from "@/content/schema/blocks";
 import { TopicQuestion, type TopicQuestionData } from "@/components/topic-question";
+import { BackPillHistory } from "@/components/back-pill-history";
 import { BottomNav } from "@/components/bottom-nav";
 import { t, type Locale } from "@/lib/i18n";
 
@@ -75,6 +76,9 @@ export function TopicScreen({
   return (
     <main className="min-h-dvh pb-24">
       <header className="border-b border-neutral-100 dark:border-neutral-800 px-6 py-4">
+        <div className="mb-3">
+          <BackPillHistory label={t(locale, "backGeneric")} />
+        </div>
         <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h1>
       </header>
 
