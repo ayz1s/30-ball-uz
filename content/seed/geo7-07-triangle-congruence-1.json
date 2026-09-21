@@ -25,13 +25,11 @@
         "paragraphs": [
           [
             {
-              "text": "Равенство треугольников — это когда два треугольника полностью совпадают друг с другом."
+              "text": "Равенство треугольников — это когда два треугольника полностью совпадают друг с другом.",
+              "highlight": true
             },
             {
-              "text": "Если наложить один треугольник на другой и они совместятся во всех точках, они равны."
-            },
-            {
-              "text": "Записывают так: ΔABC = ΔA₁B₁C₁."
+              "text": "Если наложить один треугольник на другой и они совместятся во всех точках, они равны.Записывают так: ΔABC = ΔA₁B₁C₁."
             }
           ],
           [
@@ -111,24 +109,102 @@
         "type": "geoFigure",
         "caption": "ΔABC и ΔA₁B₁C₁: AB=A₁B₁=6, AC=A₁C₁=8, угол между ними ∠A=∠A₁=40° — признак СУС",
         "points": [
-          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
-          { "id": "B", "x": 6, "y": 0, "label": "B", "labelDx": 4, "labelDy": 14 },
-          { "id": "C", "x": 6.13, "y": 5.14, "label": "C", "labelDx": 4, "labelDy": -8 },
-          { "id": "A1", "x": 140, "y": 0, "label": "A₁", "labelDx": -16, "labelDy": 6 },
-          { "id": "B1", "x": 146, "y": 0, "label": "B₁", "labelDx": 4, "labelDy": 14 },
-          { "id": "C1", "x": 146.13, "y": 5.14, "label": "C₁", "labelDx": 4, "labelDy": -8 }
+          {
+            "id": "A",
+            "x": 0,
+            "y": 0,
+            "label": "A",
+            "labelDx": -14,
+            "labelDy": 6
+          },
+          {
+            "id": "B",
+            "x": 6,
+            "y": 0,
+            "label": "B",
+            "labelDx": 4,
+            "labelDy": 14
+          },
+          {
+            "id": "C",
+            "x": 6.13,
+            "y": 5.14,
+            "label": "C",
+            "labelDx": 4,
+            "labelDy": -8
+          },
+          {
+            "id": "A1",
+            "x": 140,
+            "y": 0,
+            "label": "A₁",
+            "labelDx": -16,
+            "labelDy": 6
+          },
+          {
+            "id": "B1",
+            "x": 146,
+            "y": 0,
+            "label": "B₁",
+            "labelDx": 4,
+            "labelDy": 14
+          },
+          {
+            "id": "C1",
+            "x": 146.13,
+            "y": 5.14,
+            "label": "C₁",
+            "labelDx": 4,
+            "labelDy": -8
+          }
         ],
         "segments": [
-          { "from": "A", "to": "B", "ticks": 1 },
-          { "from": "A", "to": "C", "ticks": 2 },
-          { "from": "B", "to": "C" },
-          { "from": "A1", "to": "B1", "ticks": 1 },
-          { "from": "A1", "to": "C1", "ticks": 2 },
-          { "from": "B1", "to": "C1" }
+          {
+            "from": "A",
+            "to": "B",
+            "ticks": 1
+          },
+          {
+            "from": "A",
+            "to": "C",
+            "ticks": 2
+          },
+          {
+            "from": "B",
+            "to": "C"
+          },
+          {
+            "from": "A1",
+            "to": "B1",
+            "ticks": 1
+          },
+          {
+            "from": "A1",
+            "to": "C1",
+            "ticks": 2
+          },
+          {
+            "from": "B1",
+            "to": "C1"
+          }
         ],
         "angles": [
-          { "vertex": "A", "from": "B", "to": "C", "label": "40°", "arcs": 1, "radius": 14 },
-          { "vertex": "A1", "from": "B1", "to": "C1", "label": "40°", "arcs": 1, "radius": 14 }
+          {
+            "vertex": "A",
+            "from": "B",
+            "to": "C",
+            "label": "40°",
+            "arcs": 1,
+            "radius": 14
+          },
+          {
+            "vertex": "A1",
+            "from": "B1",
+            "to": "C1",
+            "label": "40°",
+            "arcs": 1,
+            "radius": 14
+          }
         ]
       },
       {
@@ -155,27 +231,88 @@
       },
       {
         "type": "text",
-        "paragraphs": [[{ "text": "Ещё один пример на признак СУС — с общей стороной двух треугольников." }]]
+        "paragraphs": [
+          [
+            {
+              "text": "Ещё один пример на признак СУС — с общей стороной двух треугольников."
+            }
+          ]
+        ]
       },
       {
         "type": "geoFigure",
         "caption": "Точка D на отрезке AC: AD=DC=5, BD — общая сторона, ∠ADB=∠CDB=90°",
         "points": [
-          { "id": "A", "x": 0, "y": 0, "label": "A", "labelDx": -14, "labelDy": 6 },
-          { "id": "D", "x": 5, "y": 0, "label": "D", "labelDx": -4, "labelDy": 16 },
-          { "id": "C", "x": 10, "y": 0, "label": "C", "labelDx": 6, "labelDy": 6 },
-          { "id": "B", "x": 5, "y": 4, "label": "B", "labelDx": 6, "labelDy": -8 }
+          {
+            "id": "A",
+            "x": 0,
+            "y": 0,
+            "label": "A",
+            "labelDx": -14,
+            "labelDy": 6
+          },
+          {
+            "id": "D",
+            "x": 5,
+            "y": 0,
+            "label": "D",
+            "labelDx": -4,
+            "labelDy": 16
+          },
+          {
+            "id": "C",
+            "x": 10,
+            "y": 0,
+            "label": "C",
+            "labelDx": 6,
+            "labelDy": 6
+          },
+          {
+            "id": "B",
+            "x": 5,
+            "y": 4,
+            "label": "B",
+            "labelDx": 6,
+            "labelDy": -8
+          }
         ],
         "segments": [
-          { "from": "A", "to": "D", "ticks": 1 },
-          { "from": "D", "to": "C", "ticks": 1 },
-          { "from": "A", "to": "B" },
-          { "from": "D", "to": "B" },
-          { "from": "C", "to": "B" }
+          {
+            "from": "A",
+            "to": "D",
+            "ticks": 1
+          },
+          {
+            "from": "D",
+            "to": "C",
+            "ticks": 1
+          },
+          {
+            "from": "A",
+            "to": "B"
+          },
+          {
+            "from": "D",
+            "to": "B"
+          },
+          {
+            "from": "C",
+            "to": "B"
+          }
         ],
         "angles": [
-          { "vertex": "D", "from": "A", "to": "B", "right": true },
-          { "vertex": "D", "from": "C", "to": "B", "right": true }
+          {
+            "vertex": "D",
+            "from": "A",
+            "to": "B",
+            "right": true
+          },
+          {
+            "vertex": "D",
+            "from": "C",
+            "to": "B",
+            "right": true
+          }
         ]
       },
       {
