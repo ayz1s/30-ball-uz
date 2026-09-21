@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
+import { BackButton } from "@/components/back-button";
 import { Providers } from "@/components/providers";
 import { ThemeSync } from "@/components/theme-sync";
 import { getAppConfig } from "@/lib/config";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             рендере ложно уходит в браузерную заглушку (см. раздел 8 ТЗ). */}
         <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
         <ThemeSync />
+        <BackButton />
         <Providers>{children}</Providers>
       </body>
     </html>

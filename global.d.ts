@@ -10,6 +10,12 @@ declare global {
         offEvent?: (event: string, handler: () => void) => void;
         ready?: () => void;
         expand?: () => void;
+        BackButton?: {
+          show: () => void;
+          hide: () => void;
+          onClick: (handler: () => void) => void;
+          offClick: (handler: () => void) => void;
+        };
       };
     };
   }
