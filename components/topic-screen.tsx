@@ -75,10 +75,10 @@ export function TopicScreen({
 
   return (
     <main className="min-h-dvh pb-24">
+      <div className="sticky top-0 z-30 border-b border-neutral-100 bg-[#FAF8F5]/95 px-6 py-2.5 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/95">
+        <BackPillHistory label={t(locale, "backGeneric")} />
+      </div>
       <header className="border-b border-neutral-100 dark:border-neutral-800 px-6 py-4">
-        <div className="mb-3">
-          <BackPillHistory label={t(locale, "backGeneric")} />
-        </div>
         <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h1>
       </header>
 
